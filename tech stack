@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Car Garage — BPMN Technology Map</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#f7f5f0; --paper:#fff; --ink:#1a1a1a; --dim:#888; --rule:#e0dbd0;
+    --cust:#1e4fa0; --cust-l:#ebf0fa;
+    --sys:#1a6b3c;  --sys-l:#e8f3ed;
+    --mech:#b8922a; --mech-l:#fff8e8;
+    --nocode:#1a6b3c; --nocode-l:#e8f3ed;
+    --lowcode:#b8922a; --lowcode-l:#fff8e8;
+    --hw:#c94f1e; --hw-l:#faeee9;
+    --shadow:0 2px 12px rgba(0,0,0,.08);
+    --shadow-lg:0 8px 32px rgba(0,0,0,.14);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:'Lato',sans-serif;font-size:14px;line-height:1.6}
+
+  /* HEADER */
+  .header{background:var(--ink);color:#fff;padding:36px 48px 28px;position:relative;overflow:hidden}
+  .header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--sys),var(--cust),var(--mech))}
+  .header-kicker{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#aaa;margin-bottom:10px}
+  .header h1{font-family:'Syne',sans-serif;font-size:clamp(22px,3.5vw,38px);font-weight:800;line-height:1.1;margin-bottom:10px}
+  .header h1 span{color:#6dbf8f}
+  .header p{color:#aaa;font-size:13.5px;max-width:600px}
+  .legend-row{display:flex;gap:20px;flex-wrap:wrap;margin-top:20px;padding-top:16px;border-top:1px solid #333}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:#bbb;font-family:'DM Mono',monospace}
+  .ldot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+  .llane{width:14px;height:10px;border-radius:2px;flex-shrink:0}
+  .lgw{width:10px;height:10px;transform:rotate(45deg);border-radius:1px;flex-shrink:0}
+
+  /* HINT */
+  .hint-bar{background:var(--ink);color:#aaa;text-align:center;padding:10px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px}
+  .hint-bar span{color:#6dbf8f}
+
+  /* MAIN */
+  .main{max-width:1200px;margin:0 auto;padding:36px 28px}
+
+  /* BPMN POOL */
+  .pool{border:2px solid var(--ink);border-radius:8px;overflow:hidden;margin-bottom:40px;background:var(--paper);box-shadow:var(--shadow)}
+
+  /* LANE */
+  .lane{display:grid;grid-template-columns:90px 1fr;border-bottom:1.5px solid var(--rule)}
+  .lane:last-child{border-bottom:none}
+  .lane-lbl{display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;transform:rotate(180deg);font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;border-right:3px solid;padding:16px 10px}
+  .lane-lbl.c{border-color:var(--cust);color:var(--cust);background:var(--cust-l)}
+  .lane-lbl.s{border-color:var(--sys);color:var(--sys);background:var(--sys-l)}
+  .lane-lbl.m{border-color:var(--mech);color:var(--mech);background:var(--mech-l)}
+  .lane-body{padding:18px 14px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;min-height:110px}
+  .lane-body.top{align-items:flex-start}
+
+  /* BPMN ELEMENTS */
+  .ev-start{width:30px;height:30px;border-radius:50%;border:2.5px solid var(--cust);background:var(--cust-l);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--cust)}
+  .ev-end{width:30px;height:30px;border-radius:50%;border:4px solid;flex-shrink:0}
+  .ev-end.grn{border-color:var(--sys)}
+  .ev-end.red{border-color:var(--hw);width:24px;height:24px}
+
+  /* Task */
+  .task{border-radius:6px;border:1.5px solid;padding:8px 10px;cursor:pointer;transition:transform .15s,box-shadow .15s;position:relative;min-width:105px;max-width:135px;flex-shrink:0}
+  .task:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);z-index:5}
+  .task.c{border-color:var(--cust);background:var(--cust-l)}
+  .task.s{border-color:var(--sys);background:var(--sys-l)}
+  .task.m{border-color:var(--mech);background:var(--mech-l)}
+  .task.warn{border-color:var(--hw);background:var(--hw-l)}
+  .t-name{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:5px}
+  .badge{display:inline-flex;align-items:center;gap:3px;font-family:'DM Mono',monospace;font-size:8px;font-weight:500;padding:2px 5px;border-radius:3px;line-height:1.2}
+  .badge.nc{background:var(--nocode-l);color:var(--nocode);border:1px solid #b2d9c0}
+  .badge.lc{background:var(--lowcode-l);color:var(--lowcode);border:1px solid #e0c87a}
+  .badge.hw{background:var(--hw-l);color:var(--hw);border:1px solid #e8b09a}
+
+  /* Gateway */
+  .gw-wrap{display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0}
+  .gw{width:42px;height:42px;transform:rotate(45deg);border:2px solid var(--sys);background:#fff;flex-shrink:0;cursor:pointer;transition:box-shadow .15s;display:flex;align-items:center;justify-content:center}
+  .gw:hover{box-shadow:var(--shadow-lg)}
+  .gw .xi{transform:rotate(-45deg);font-size:14px;color:var(--sys);font-weight:800}
+  .gwp{width:42px;height:42px;transform:rotate(45deg);border:2px solid var(--mech);background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .gwp .pi{transform:rotate(-45deg);font-size:16px;color:var(--mech);font-weight:700;line-height:1}
+  .gw-lbl{font-family:'DM Mono',monospace;font-size:8.5px;color:var(--dim);text-align:center;max-width:68px;line-height:1.3}
+
+  /* Arrows */
+  .arr{color:#b0a898;font-size:16px;flex-shrink:0;font-family:'DM Mono',monospace}
+  .arr-lbl{font-family:'DM Mono',monospace;font-size:8px;color:var(--dim)}
+  .loop-note{font-family:'DM Mono',monospace;font-size:8px;color:var(--hw);background:var(--hw-l);border:1px solid #e8b09a;padding:2px 6px;border-radius:3px;white-space:nowrap}
+
+  /* Cross-lane note */
+  .cross-note{font-family:'DM Mono',monospace;font-size:8px;color:var(--dim);line-height:1.4}
+
+  /* col helpers */
+  .col{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+  .row{display:flex;align-items:center;gap:6px}
+
+  /* DETAIL PANEL */
+  .panel{position:fixed;top:50%;right:28px;transform:translateY(-50%) translateX(20px);width:310px;background:var(--paper);border:2px solid var(--ink);border-radius:10px;box-shadow:var(--shadow-lg);z-index:200;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+  .panel.show{opacity:1;pointer-events:all;transform:translateY(-50%) translateX(0)}
+  .panel-head{padding:14px 16px 10px;border-bottom:1px solid var(--rule)}
+  .panel-lane{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;margin-bottom:3px}
+  .panel-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;line-height:1.2;padding-right:20px}
+  .panel-body{padding:12px 16px}
+  .p-section{margin-bottom:12px}
+  .p-section:last-child{margin-bottom:0}
+  .p-lbl{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:5px}
+  .p-text{font-size:12px;color:#444;line-height:1.55}
+  .chips{display:flex;flex-wrap:wrap;gap:4px}
+  .chip{display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border-radius:4px;font-family:'DM Mono',monospace;font-size:10.5px}
+  .chip.nc{background:var(--nocode-l);color:var(--nocode);border:1px solid #b2d9c0}
+  .chip.lc{background:var(--lowcode-l);color:var(--lowcode);border:1px solid #e0c87a}
+  .chip.hw{background:var(--hw-l);color:var(--hw);border:1px solid #e8b09a}
+  .close-btn{position:absolute;top:8px;right:10px;background:none;border:none;font-size:18px;color:var(--dim);cursor:pointer;padding:2px 6px;border-radius:4px}
+  .close-btn:hover{background:var(--rule)}
+
+  /* SUMMARY */
+  .sum-lbl{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+  .sum-lbl::after{content:'';flex:1;height:1px;background:var(--rule)}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+  .card{background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:14px;transition:box-shadow .15s}
+  .card:hover{box-shadow:var(--shadow)}
+  .card-top{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px}
+  .card-icon{font-size:22px;line-height:1;flex-shrink:0}
+  .card-name{font-family:'Syne',sans-serif;font-size:12.5px;font-weight:700;line-height:1.2}
+  .card-type{font-family:'DM Mono',monospace;font-size:8.5px;margin-top:3px}
+  .card-type.nc{color:var(--nocode)} .card-type.lc{color:var(--lowcode)} .card-type.hw{color:var(--hw)}
+  .card-desc{font-size:11.5px;color:var(--dim);line-height:1.5}
+  .card-desc strong{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<div class="hint-bar">Click any <span>task box</span> to see the tool details and setup instructions →</div>
+
+<div class="header">
+  <div class="header-kicker">Digital Transformation · Car Garage · To-Be BPMN v3</div>
+  <h1>Which <span>Tool</span> Powers<br>Each BPMN Step?</h1>
+  <p>Every task in the process is mapped to a specific no-code or low-code tool. Click any step to see what it does and how to set it up — no developer needed.</p>
+  <div class="legend-row">
+    <div class="legend-item"><div class="llane" style="background:var(--cust-l);border:2px solid var(--cust)"></div>Customer</div>
+    <div class="legend-item"><div class="llane" style="background:var(--sys-l);border:2px solid var(--sys)"></div>Garage System</div>
+    <div class="legend-item"><div class="llane" style="background:var(--mech-l);border:2px solid var(--mech)"></div>Mechanic</div>
+    <div class="legend-item"><div class="ldot" style="background:var(--nocode)"></div>No-Code</div>
+    <div class="legend-item"><div class="ldot" style="background:var(--lowcode)"></div>Low-Code</div>
+    <div class="legend-item"><div class="ldot" style="background:var(--hw)"></div>Hardware</div>
+    <div class="legend-item"><div class="lgw" style="border:2px solid #888;background:#fff"></div>XOR Gateway</div>
+    <div class="legend-item"><div class="lgw" style="border:2px solid var(--mech);background:#fff"></div>Parallel Gateway</div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ══ BPMN POOL ══ -->
+<div class="pool">
+
+  <!-- CUSTOMER LANE -->
+  <div class="lane">
+    <div class="lane-lbl c">Customer</div>
+    <div class="lane-body">
+      <div class="ev-start">●</div>
+      <div class="arr">→</div>
+
+      <div class="task c" onclick="show('submit')">
+        <div class="t-name">Submit Booking</div>
+        <span class="badge nc">SimplyBook.me</span>
+      </div>
+      <div class="arr">→</div>
+
+      <div class="task c" onclick="show('confirm')">
+        <div class="t-name">Receive Confirmation</div>
+        <span class="badge nc">WhatsApp / SMS</span>
+      </div>
+      <div class="arr">→</div>
+
+      <div class="task c" onclick="show('dropoff')">
+        <div class="t-name">Drop Off Car (QR Scan)</div>
+        <span class="badge nc">GaragePlug</span>
+      </div>
+      <div class="arr">→</div>
+
+      <div class="task c" onclick="show('track')">
+        <div class="t-name">Track Job Status</div>
+        <span class="badge nc">GaragePlug Portal</span>
+      </div>
+
+      <div style="margin-left:10px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+        <!-- estimate gateway -->
+        <div class="gw-wrap" onclick="show('gw_approval')">
+          <div class="gw" style="cursor:pointer"><div class="xi">✕</div></div>
+          <div class="gw-lbl">Estimate sent?</div>
+        </div>
+
+        <div class="col" style="gap:4px;">
+          <div class="row">
+            <div class="arr-lbl">Yes →</div>
+            <div class="task c" onclick="show('approve')">
+              <div class="t-name">Approve Cost Estimate</div>
+              <span class="badge nc">WhatsApp</span>
+            </div>
+            <div class="arr">→</div>
+          </div>
+          <div style="margin-left:44px;">
+            <div class="arr-lbl">No → skip</div>
+          </div>
+        </div>
+
+        <div class="col" style="align-items:center;gap:4px;">
+          <div class="task c" onclick="show('collect')">
+            <div class="t-name">Collect Car &amp; Pay</div>
+            <span class="badge nc">SumUp / PayPal</span>
+          </div>
+          <div class="arr-lbl">↑ notified by invoice</div>
+        </div>
+        <div class="arr">→</div>
+        <div class="col" style="align-items:center;gap:4px;">
+          <div class="ev-end grn"></div>
+          <div class="arr-lbl">Done</div>
+        </div>
+        <div class="col" style="align-items:center;gap:4px;margin-left:10px;">
+          <div class="ev-end red"></div>
+          <div class="arr-lbl" style="color:var(--hw);">Rejected</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GARAGE SYSTEM LANE -->
+  <div class="lane">
+    <div class="lane-lbl s">Garage System</div>
+    <div class="lane-body top" style="gap:16px;">
+
+      <!-- column 1: job card + parts -->
+      <div class="col" style="padding-top:8px;">
+        <div class="cross-note">↓ triggered by QR drop-off</div>
+        <div class="task s" onclick="show('jobcard')">
+          <div class="t-name">Create Digital Job Card</div>
+          <span class="badge nc">GaragePlug</span>
+        </div>
+        <div class="arr" style="align-self:center;">↓</div>
+        <div class="task s" onclick="show('parts')">
+          <div class="t-name">Auto Parts Check</div>
+          <span class="badge nc">GaragePlug Inventory</span>
+        </div>
+        <div class="arr" style="align-self:center;">↓</div>
+        <div class="gw-wrap" onclick="show('gw_parts')" style="cursor:pointer;align-self:flex-start;">
+          <div style="display:flex;align-items:center;gap:6px;">
+            <div class="gw"><div class="xi">✕</div></div>
+            <div class="gw-lbl" style="text-align:left;">Parts<br>available?</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- column 2: auto-order (No path) -->
+      <div class="col" style="padding-top:72px;">
+        <div class="arr-lbl" style="color:var(--hw);">No →</div>
+        <div class="task warn" onclick="show('autoorder')">
+          <div class="t-name">Auto-Order Parts from Supplier</div>
+          <span class="badge lc">Zapier + Gmail</span>
+        </div>
+        <div class="loop-note">↩ loops back to Parts Check</div>
+      </div>
+
+      <!-- column 3: estimate gateway (Yes path) -->
+      <div class="col" style="padding-top:72px;">
+        <div class="arr-lbl">Yes →</div>
+        <div class="gw-wrap" onclick="show('gw_estimate')" style="cursor:pointer;align-self:flex-start;">
+          <div style="display:flex;align-items:center;gap:6px;">
+            <div class="gw"><div class="xi">✕</div></div>
+            <div class="gw-lbl" style="text-align:left;">Estimate<br>needed?</div>
+          </div>
+        </div>
+        <div class="arr-lbl">Yes ↑ → customer</div>
+        <div class="task s" onclick="show('estimate')">
+          <div class="t-name">Generate Digital Estimate</div>
+          <span class="badge nc">GaragePlug</span>
+        </div>
+      </div>
+
+      <!-- column 4: invoice + analytics -->
+      <div class="col" style="padding-top:8px;">
+        <div class="cross-note">↑ triggered when mechanic logs work</div>
+        <div class="task s" onclick="show('invoice')">
+          <div class="t-name">Generate E-Invoice</div>
+          <span class="badge nc">GaragePlug</span>
+        </div>
+        <div class="arr" style="align-self:center;">↓</div>
+        <div class="task s" onclick="show('analytics')">
+          <div class="t-name">Update Analytics Dashboard</div>
+          <span class="badge nc">Looker Studio</span>
+        </div>
+        <div class="cross-note">→ push notify to customer ↑</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MECHANIC LANE -->
+  <div class="lane" style="border-bottom:none">
+    <div class="lane-lbl m">Mechanic</div>
+    <div class="lane-body top" style="gap:6px; padding-top:20px;">
+
+      <div class="col" style="padding-top:6px;">
+        <div class="cross-note">↓ from Estimate GW or direct</div>
+        <div class="task m" onclick="show('receive')">
+          <div class="t-name">Receive Digital Job Card</div>
+          <span class="badge nc">GaragePlug Tablet</span>
+        </div>
+      </div>
+      <div class="arr" style="padding-top:40px;">→</div>
+
+      <div class="task m" onclick="show('inspect')" style="margin-top:28px;">
+        <div class="t-name">Inspect Car (OBD-II)</div>
+        <span class="badge hw">▲ OBD Scanner + App</span>
+      </div>
+      <div class="arr" style="padding-top:40px;">→</div>
+
+      <div class="task m" onclick="show('perform')" style="margin-top:28px;">
+        <div class="t-name">Perform Service / Repair</div>
+        <span class="badge nc">GaragePlug parts log</span>
+      </div>
+      <div class="arr" style="padding-top:40px;">→</div>
+
+      <div class="col" style="align-items:center;gap:4px;margin-top:28px;">
+        <div class="gwp"><div class="pi">+</div></div>
+        <div class="gw-lbl">Parallel<br>split</div>
+      </div>
+
+      <div style="margin-left:8px;display:flex;flex-direction:column;gap:10px;padding-top:12px;">
+        <div class="row">
+          <div class="arr-lbl">→</div>
+          <div class="task m" onclick="show('logwork')">
+            <div class="t-name">Log Work Done</div>
+            <span class="badge nc">GaragePlug Tablet</span>
+          </div>
+          <div class="arr-lbl" style="color:var(--mech);">→ join</div>
+        </div>
+        <div class="row">
+          <div class="arr-lbl">→</div>
+          <div class="task m" onclick="show('photo')">
+            <div class="t-name">Photo Quality Upload</div>
+            <span class="badge nc">GaragePlug / WhatsApp</span>
+          </div>
+          <div class="arr-lbl" style="color:var(--mech);">→ join</div>
+        </div>
+        <div style="padding-left:14px;">
+          <div class="row" style="gap:6px;">
+            <div class="gwp" style="width:32px;height:32px;"><div class="pi" style="font-size:12px;">+</div></div>
+            <div class="gw-lbl" style="text-align:left;">Parallel join<br>→ triggers Invoice ↑</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- end pool -->
+
+<!-- SUMMARY CARDS -->
+<div>
+  <div class="sum-lbl">Tool Summary — 7 Tools, All No-Code or Low-Code</div>
+  <div class="cards">
+
+    <div class="card">
+      <div class="card-top">
+        <div class="card-icon">🏪</div>
+        <div>
+          <div class="card-name">GaragePlug</div>
+          <div class="card-type nc">● No-Code · Free / $30 mo</div>
+        </div>
+      </div>
+      <div class="card-desc">Powers <strong>7 steps</strong>: job card creation, parts inventory, job status portal, digital estimate, mechanic tablet app, e-invoice, and QR check-in. The central hub for everything.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="card-icon">📅</div>
+        <div>
+          <div class="card-name">SimplyBook.me</div>
+          <div class="card-type nc">● No-Code · Free / $10 mo</div>
+        </div>
+      </div>
+      <div class="card-desc">Powers <strong>1 step</strong>: online booking page. Customer picks date and service, gets auto-confirmation. Share a link or embed on Facebook — no website needed.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="card-icon">💬</div>
+        <div>
+          <div class="card-name">WhatsApp Business</div>
+          <div class="card-type nc">● No-Code · Free</div>
+        </div>
+      </div>
+      <div class="card-desc">Powers <strong>3 steps</strong>: booking confirmation, cost estimate approval (customer replies Yes/No), and photo sharing. Already used by most customers — zero learning curve.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="card-icon">⚡</div>
+        <div>
+          <div class="card-name">Zapier / Make</div>
+          <div class="card-type lc">◐ Low-Code · Free / $9 mo</div>
+        </div>
+      </div>
+      <div class="card-desc">Powers <strong>1 step</strong>: auto-order parts. Drag-and-drop rule: "When GaragePlug stock is low → send reorder email to supplier." Takes 15 minutes to configure. Only Low-Code step in the whole process.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="card-icon">💳</div>
+        <div>
+          <div class="card-name">SumUp / PayPal Business</div>
+          <div class="card-type nc">● No-Code · ~1.7–2.9% per tx</div>
+        </div>
+      </div>
+      <div class="card-desc">Powers <strong>1 step</strong>: digital payment. SumUp card reader (EUR 39 one-time) for tap-to-pay at counter, or send PayPal link by SMS for online payment. No monthly fee.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="card-icon">🔌</div>
+        <div>
+          <div class="card-name">OBD-II Scanner + Car Scanner App</div>
+          <div class="card-type hw">▲ Hardware · EUR 30–80 one-time</div>
+        </div>
+      </div>
+      <div class="card-desc">Powers <strong>1 step</strong>: car inspection. Bluetooth dongle plugs into every car's dashboard port. Free app shows fault codes in plain English. Mechanic copies into GaragePlug.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="card-icon">📊</div>
+        <div>
+          <div class="card-name">Google Looker Studio</div>
+          <div class="card-type nc">● No-Code · Free</div>
+        </div>
+      </div>
+      <div class="card-desc">Powers <strong>1 step</strong>: analytics dashboard. Export GaragePlug data as CSV → Google Sheet → drag-and-drop charts. Shows revenue, mechanic performance, parts usage trends. Completely free.</div>
+    </div>
+
+  </div>
+</div>
+
+</div><!-- end main -->
+
+<!-- DETAIL PANEL -->
+<div class="panel" id="panel">
+  <button class="close-btn" onclick="hide()">✕</button>
+  <div class="panel-head">
+    <div class="panel-lane" id="p-lane"></div>
+    <div class="panel-title" id="p-title"></div>
+  </div>
+  <div class="panel-body">
+    <div class="p-section">
+      <div class="p-lbl">What happens here</div>
+      <p class="p-text" id="p-what"></p>
+    </div>
+    <div class="p-section">
+      <div class="p-lbl">Tool(s) needed</div>
+      <div class="chips" id="p-tools"></div>
+    </div>
+    <div class="p-section">
+      <div class="p-lbl">How to set it up (no code)</div>
+      <p class="p-text" id="p-setup"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+const D = {
+  submit:{lane:"CUSTOMER",laneC:"cust",title:"Submit Booking (Online / App)",
+    what:"Customer visits the booking page, picks a date, time, and service type. System blocks unavailable slots automatically. Confirmation sent instantly.",
+    tools:[{n:"SimplyBook.me",t:"nc"},{n:"Google Calendar sync",t:"nc"}],
+    setup:"Create free SimplyBook.me account → add your services and opening hours → share the booking link via WhatsApp or print as a QR code for the garage window. Takes under 1 hour."},
+  confirm:{lane:"CUSTOMER",laneC:"cust",title:"Receive Confirmation (SMS / Email)",
+    what:"As soon as booking is submitted, an automatic confirmation message is sent with appointment date, service details, and garage address.",
+    tools:[{n:"SimplyBook.me auto-email",t:"nc"},{n:"WhatsApp Business",t:"nc"}],
+    setup:"SimplyBook.me sends confirmation emails automatically — nothing to configure. For WhatsApp, save a message template and send it manually, or use Zapier to trigger it automatically."},
+  dropoff:{lane:"CUSTOMER",laneC:"cust",title:"Drop Off Car (QR Scan Check-in)",
+    what:"Customer scans a QR code posted at the entrance. This logs the exact drop-off time and simultaneously triggers the system to create the digital job card — no staff action needed.",
+    tools:[{n:"GaragePlug check-in QR",t:"nc"}],
+    setup:"In GaragePlug dashboard, generate the check-in QR code → print and laminate it → place at the garage entrance. When scanned, GaragePlug creates the job automatically."},
+  track:{lane:"CUSTOMER",laneC:"cust",title:"Track Job Status (Customer Portal)",
+    what:"Customer sees the live status of their car via a link sent by GaragePlug SMS — e.g. 'Received', 'Being Inspected', 'Ready for Pickup'. This is passive information — the process does not wait on this step.",
+    tools:[{n:"GaragePlug customer portal",t:"nc"},{n:"WhatsApp status update",t:"nc"}],
+    setup:"GaragePlug automatically generates a status tracking link per job and sends it by SMS. When the mechanic updates the job status in the dashboard, the customer's view updates in real time."},
+  gw_approval:{lane:"XOR GATEWAY — CUSTOMER",laneC:"cust",title:"Gateway: Was an Estimate Sent?",
+    what:"If a cost estimate was needed and sent to the customer (Yes path) → customer must approve before work is invoiced. If no estimate was needed (No path) → job goes straight to Collect & Pay.",
+    tools:[{n:"Logic built into GaragePlug",t:"nc"}],
+    setup:"In GaragePlug, each service type can be flagged as 'requires estimate'. The system handles the branching automatically — no manual decision each time."},
+  approve:{lane:"CUSTOMER",laneC:"cust",title:"Approve Cost Estimate (One-click)",
+    what:"Customer receives the cost estimate as a WhatsApp message or SMS link. They reply 'Yes' or tap Approve. The approval is logged in GaragePlug with a timestamp as a digital audit trail.",
+    tools:[{n:"GaragePlug estimate link",t:"nc"},{n:"WhatsApp Business",t:"nc"}],
+    setup:"In GaragePlug: open job card → Add Estimate → system auto-calculates from parts + labour → click Send. Copy the estimate link into WhatsApp to the customer. Customer taps Approve."},
+  collect:{lane:"CUSTOMER",laneC:"cust",title:"Collect Car & Pay (Digital Invoice)",
+    what:"Customer receives a push notification or SMS that the car is ready. They pay via tap-to-pay card reader at the counter, or via an online link sent by GaragePlug before they arrive.",
+    tools:[{n:"GaragePlug invoice + SMS",t:"nc"},{n:"SumUp card reader",t:"nc"},{n:"PayPal payment link",t:"nc"}],
+    setup:"SumUp card reader: EUR 39 one-time purchase. Create a SumUp account (free) and connect to GaragePlug. Alternatively, GaragePlug generates a payment link that can be sent by SMS or WhatsApp."},
+  jobcard:{lane:"GARAGE SYSTEM",laneC:"sys",title:"Create Digital Job Card (VIN Auto-fill)",
+    what:"The QR drop-off scan triggers GaragePlug to create a new digital job entry. The mechanic opens the job on the tablet and scans or types the VIN — GaragePlug auto-fills vehicle make, model, year, engine type, and service history.",
+    tools:[{n:"GaragePlug",t:"nc"},{n:"Built-in VIN lookup",t:"nc"}],
+    setup:"Built into GaragePlug. Open the dashboard → New Job → enter or scan VIN → vehicle details fill automatically from the GaragePlug vehicle database. Assign to a mechanic in one tap."},
+  parts:{lane:"GARAGE SYSTEM",laneC:"sys",title:"Auto Parts Availability Check",
+    what:"When a job is created, GaragePlug checks the parts inventory against the required items for that service type. Green = in stock, Red = needs ordering. No storeroom walk needed.",
+    tools:[{n:"GaragePlug inventory module",t:"nc"}],
+    setup:"Set up your parts inventory in GaragePlug once by importing a simple Excel list. After that, GaragePlug auto-deducts parts when assigned to a job and shows live stock levels on the dashboard."},
+  gw_parts:{lane:"XOR GATEWAY — GARAGE SYSTEM",laneC:"sys",title:"Gateway: Parts Available?",
+    what:"Yes → process continues to the Estimate gateway. No → system flags the missing parts and the job is placed on hold while the auto-order process runs. Job resumes when delivery is confirmed.",
+    tools:[{n:"GaragePlug stock alert",t:"nc"},{n:"Zapier (if auto-order)",t:"lc"}],
+    setup:"GaragePlug shows a red alert when parts fall below minimum stock. For auto-ordering, set up a Zapier rule: 'When GaragePlug stock alert fires → send reorder email to supplier.' Takes ~15 minutes."},
+  autoorder:{lane:"GARAGE SYSTEM",laneC:"sys",title:"Auto-Order Parts from Supplier",
+    what:"When stock falls below the minimum level, the system automatically sends a purchase order email to the supplier. This is the ONLY Low-Code step — it requires a one-time Zapier setup connecting GaragePlug to Gmail.",
+    tools:[{n:"Zapier automation",t:"lc"},{n:"Gmail (supplier email)",t:"nc"}],
+    setup:"In Zapier: create a Zap → Trigger = 'GaragePlug inventory below minimum' → Action = 'Send Gmail to supplier with part name + quantity'. Once set up it runs automatically forever. Takes ~15 minutes to configure."},
+  gw_estimate:{lane:"XOR GATEWAY — GARAGE SYSTEM",laneC:"sys",title:"Gateway: Cost Estimate Needed?",
+    what:"Routine services (standard oil change, tyre rotation) go directly to the mechanic without needing a customer estimate. Non-routine or unexpected work triggers an estimate to be sent for approval first.",
+    tools:[{n:"GaragePlug service settings",t:"nc"}],
+    setup:"In GaragePlug, each service type can be pre-configured as 'estimate required' or 'no estimate needed'. The gateway logic runs automatically — no decision needed from staff each time."},
+  estimate:{lane:"GARAGE SYSTEM",laneC:"sys",title:"Generate Digital Estimate (Auto-send SMS + App)",
+    what:"GaragePlug calculates the total cost from the parts list and labour rate, generates an itemised estimate PDF, and sends a link to the customer by SMS so they can approve it with one tap.",
+    tools:[{n:"GaragePlug estimate module",t:"nc"},{n:"WhatsApp Business",t:"nc"}],
+    setup:"In GaragePlug: open job card → Create Estimate → system auto-calculates → click Send by SMS. Staff also copies the estimate link into WhatsApp for faster customer response. Approval is recorded automatically."},
+  invoice:{lane:"GARAGE SYSTEM",laneC:"sys",title:"Generate E-Invoice (Push Notify Customer)",
+    what:"Once the mechanic taps 'Job Complete' on the tablet, GaragePlug automatically generates a PDF invoice with itemised parts and labour. A push notification and SMS are sent to the customer: 'Your car is ready.'",
+    tools:[{n:"GaragePlug invoicing",t:"nc"},{n:"WhatsApp pickup message",t:"nc"}],
+    setup:"Built into GaragePlug. When mechanic marks job complete, the invoice auto-generates. GaragePlug sends the customer an SMS with the invoice link. Staff can also message via WhatsApp. No manual calculation."},
+  analytics:{lane:"GARAGE SYSTEM",laneC:"sys",title:"Update Analytics Dashboard",
+    what:"Every completed job automatically updates the GaragePlug built-in reports. For deeper custom charts (revenue trends, mechanic performance, peak hours), data is exported to Google Looker Studio.",
+    tools:[{n:"GaragePlug reports (built-in)",t:"nc"},{n:"Google Looker Studio",t:"nc"},{n:"Google Sheets export",t:"nc"}],
+    setup:"GaragePlug dashboard reports are live — view anytime, no setup. For Looker Studio: export GaragePlug data as CSV → paste into Google Sheets → connect to Looker Studio → build drag-and-drop charts. All 100% free."},
+  receive:{lane:"MECHANIC",laneC:"mech",title:"Receive Digital Job Card (Tablet App)",
+    what:"When a job is assigned, it appears instantly on the mechanic's GaragePlug tablet app with the vehicle details, service required, parts list, customer name, and any special notes — replacing paper job sheets entirely.",
+    tools:[{n:"GaragePlug tablet app (free)",t:"nc"}],
+    setup:"Mechanic downloads the free GaragePlug app on any Android or iPad tablet. Log in with the mechanic account. All assigned jobs appear automatically. Update status in real time with one tap."},
+  inspect:{lane:"MECHANIC",laneC:"mech",title:"Inspect Car (OBD-II Scanner)",
+    what:"Mechanic plugs a small Bluetooth OBD-II adapter into the car's diagnostic port (a standard socket under the dashboard in every car since 1996). The free Car Scanner app reads all fault codes in plain language within 30 seconds.",
+    tools:[{n:"OBD-II Bluetooth dongle",t:"hw"},{n:"Car Scanner app (free iOS/Android)",t:"nc"}],
+    setup:"Buy OBDLink MX+ or similar (EUR 30–80, one-time). Download 'Car Scanner' free app. Plug adapter into car → open app on tablet → all fault codes shown in plain English. Mechanic copies key codes into the GaragePlug job card."},
+  perform:{lane:"MECHANIC",laneC:"mech",title:"Perform Service / Repair",
+    what:"Mechanic carries out the repair or maintenance using the parts allocated in GaragePlug. In the tablet app, they tap each part as they use it — inventory is automatically deducted, no separate tracking needed.",
+    tools:[{n:"GaragePlug parts tracking",t:"nc"}],
+    setup:"In the GaragePlug tablet app: open job card → tap 'Use Part' for each part consumed. Stock deducts automatically. Any additional issues can be flagged in the notes for a supplementary estimate."},
+  logwork:{lane:"MECHANIC",laneC:"mech",title:"Log Work Done (Tablet Checklist)",
+    what:"After completing the service, mechanic fills in a digital checklist in the GaragePlug tablet app: work performed, time taken, parts used, and any future service recommendations. Data syncs to the system instantly and triggers the e-invoice.",
+    tools:[{n:"GaragePlug job completion form",t:"nc"}],
+    setup:"In GaragePlug tablet app: tap 'Complete Job' → fill in the checklist → tap Submit. This action automatically triggers the e-invoice generation in the Garage System lane. Takes under 2 minutes."},
+  photo:{lane:"MECHANIC",laneC:"mech",title:"Photo Quality Check Upload",
+    what:"Mechanic takes before-and-after photos of the repair with the tablet camera and uploads them directly to the GaragePlug job record. Photos are stored permanently and can be shared with the customer as proof of work done.",
+    tools:[{n:"GaragePlug photo upload",t:"nc"},{n:"WhatsApp (share with customer)",t:"nc"}],
+    setup:"In GaragePlug tablet app: tap the camera icon on the job card → take or select photos → they attach to the job record automatically. To share with the customer, mechanic can also send the photo via WhatsApp chat."}
+};
+
+const laneColors = { cust:"var(--cust)", sys:"var(--sys)", mech:"var(--mech)" };
+
+function show(id) {
+  const d = D[id]; if (!d) return;
+  document.getElementById('p-lane').textContent = d.lane + " LANE";
+  document.getElementById('p-lane').style.color = laneColors[d.laneC];
+  document.getElementById('p-title').textContent = d.title;
+  document.getElementById('p-what').textContent = d.what;
+  document.getElementById('p-setup').textContent = d.setup;
+  const chips = document.getElementById('p-tools');
+  chips.innerHTML = '';
+  d.tools.forEach(t => {
+    const c = document.createElement('div');
+    c.className = `chip ${t.t}`;
+    c.textContent = (t.t==='nc'?'● ':t.t==='lc'?'◐ ':'▲ ') + t.n;
+    chips.appendChild(c);
+  });
+  document.getElementById('panel').classList.add('show');
+}
+function hide() { document.getElementById('panel').classList.remove('show'); }
+document.addEventListener('keydown', e => { if (e.key==='Escape') hide(); });
+</script>
+</body>
+</html>
