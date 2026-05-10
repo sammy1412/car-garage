@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Car Garage — C4 Model Tech Stack</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #0e1117;
+  --surface: #161b27;
+  --surface2:#1e253a;
+  --border:  #2a3350;
+  --text:    #e2e8f0;
+  --dim:     #6b7a99;
+  --acc:     #4a9eff;
+  --acc2:    #00d4aa;
+  --acc3:    #f59e0b;
+  --acc4:    #f472b6;
+  --red:     #ef4444;
+
+  /* C4 colours */
+  --person:  #083d6e;
+  --person-b:#1a6eba;
+  --system:  #1a3a1a;
+  --system-b:#2d7a2d;
+  --ext:     #2a2a2a;
+  --ext-b:   #555;
+  --cont:    #1a2e4a;
+  --cont-b:  #2563eb;
+  --comp:    #2a1a3a;
+  --comp-b:  #7c3aed;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.6;min-height:100vh}
+
+/* NAV TABS */
+.nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32px;display:flex;align-items:stretch;gap:0}
+.nav-tab{padding:14px 22px;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;user-select:none}
+.nav-tab:hover{color:var(--text);background:var(--surface2)}
+.nav-tab.active{color:var(--acc);border-bottom-color:var(--acc);background:transparent}
+.nav-brand{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--acc2);padding:14px 22px 14px 0;border-right:1px solid var(--border);margin-right:12px;white-space:nowrap}
+
+/* PAGES */
+.page{display:none;padding:32px}
+.page.active{display:block}
+
+/* HEADER */
+.page-head{margin-bottom:28px}
+.level-tag{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--acc2);margin-bottom:6px}
+.page-head h2{font-size:22px;font-weight:600;margin-bottom:6px}
+.page-head p{color:var(--dim);font-size:13px;max-width:620px}
+
+/* C4 DIAGRAM CANVAS */
+.diagram{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:32px;overflow-x:auto;position:relative}
+
+/* BOUNDARY BOX */
+.boundary{border:2px dashed;border-radius:8px;padding:20px 20px 16px;margin:8px;position:relative;display:inline-block}
+.boundary-label{position:absolute;top:-11px;left:16px;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:2px 8px;border-radius:3px}
+
+/* BOXES */
+.c4-row{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;margin-bottom:16px}
+.c4-box{border-radius:8px;padding:14px 16px;min-width:160px;max-width:200px;border:1.5px solid;position:relative;transition:transform .15s,box-shadow .15s;cursor:default}
+.c4-box:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.4)}
+
+.c4-box.person  {background:var(--person); border-color:var(--person-b)}
+.c4-box.system  {background:var(--system); border-color:var(--system-b)}
+.c4-box.external{background:var(--ext);    border-color:var(--ext-b)}
+.c4-box.container{background:var(--cont); border-color:var(--cont-b)}
+.c4-box.component{background:var(--comp); border-color:var(--comp-b)}
+
+.c4-icon{font-size:22px;margin-bottom:6px;display:block}
+.c4-type{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;opacity:.7}
+.c4-name{font-size:12px;font-weight:600;line-height:1.3;margin-bottom:4px}
+.c4-desc{font-size:10.5px;color:#8899bb;line-height:1.4}
+.c4-tech{font-family:'IBM Plex Mono',monospace;font-size:8.5px;color:var(--acc);margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,.08)}
+
+/* ARROWS between boxes */
+.arrows-row{display:flex;align-items:center;justify-content:center;gap:0;padding:0 8px}
+.arr-line{flex:1;height:1px;background:var(--border)}
+.arr-label{font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--dim);white-space:nowrap;padding:0 8px;text-align:center}
+.arr-down{display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 0}
+.arr-down .line{width:1px;height:24px;background:var(--border)}
+.arr-down .lbl{font-family:'IBM Plex Mono',monospace;font-size:7.5px;color:var(--dim);white-space:nowrap}
+
+/* VERTICAL LAYOUT */
+.vert{display:flex;flex-direction:column;gap:0;align-items:flex-start}
+.horiz{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap}
+
+/* LEGEND */
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
+.leg-item{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--dim);font-family:'IBM Plex Mono',monospace}
+.leg-box{width:12px;height:12px;border-radius:3px;border:1.5px solid;flex-shrink:0}
+
+/* RELATIONSHIP TABLE */
+.rel-table{width:100%;border-collapse:collapse;margin-top:20px}
+.rel-table th{background:var(--surface2);color:var(--dim);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1px;text-align:left;padding:8px 12px;border-bottom:1px solid var(--border)}
+.rel-table td{padding:8px 12px;border-bottom:1px solid var(--border);font-size:12px;color:#9aabcc;vertical-align:top}
+.rel-table tr:hover td{background:var(--surface2)}
+.tag{display:inline-block;padding:1px 7px;border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600}
+.tag.nc{background:#1a3a1a;color:#2d7a2d;border:1px solid #2d7a2d}
+.tag.lc{background:#2a1a08;color:#d97706;border:1px solid #d97706}
+.tag.hw{background:#3a1a1a;color:#ef4444;border:1px solid #ef4444}
+.tag.ext{background:#1a1a2e;color:#6b7aff;border:1px solid #6b7aff}
+
+/* C4 SPECIFIC LAYOUT */
+.sys-boundary{border-color:#2d7a2d;background:rgba(29,78,29,.08)}
+.sys-boundary .boundary-label{background:#1a3a1a;color:#2d7a2d}
+.ext-boundary{border-color:#555;background:rgba(60,60,60,.08)}
+.ext-boundary .boundary-label{background:#2a2a2a;color:#888}
+
+/* INFO CALLOUT */
+.callout{background:var(--surface2);border:1px solid var(--border);border-left:3px solid var(--acc2);border-radius:6px;padding:12px 16px;margin-bottom:20px;font-size:12.5px;color:#8899bb}
+.callout strong{color:var(--text)}
+
+/* SVG ARROWS */
+.svg-wrap{width:100%;overflow-x:auto}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="nav">
+  <div class="nav-brand">🔧 Car Garage · C4 Model</div>
+  <div class="nav-tab active" onclick="tab(this,'c1')">C1 · System Context</div>
+  <div class="nav-tab" onclick="tab(this,'c2')">C2 · Container</div>
+  <div class="nav-tab" onclick="tab(this,'c3')">C3 · Component</div>
+  <div class="nav-tab" onclick="tab(this,'c4t')">Tool Summary</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     C1 — SYSTEM CONTEXT
+═══════════════════════════════════════════ -->
+<div class="page active" id="c1">
+  <div class="page-head">
+    <div class="level-tag">Level 1 — System Context Diagram</div>
+    <h2>Who uses the system and what does it connect to?</h2>
+    <p>Shows the car garage digital system as a whole, the people who interact with it, and the external systems it depends on. No internal detail yet.</p>
+  </div>
+
+  <div class="callout">
+    <strong>How to read C4:</strong> Start here (big picture), then drill into C2 (containers/apps), then C3 (components inside each app). Each level zooms in one step deeper.
+  </div>
+
+  <div class="diagram">
+
+    <!-- Persons row -->
+    <div style="margin-bottom:8px;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--dim);text-transform:uppercase">People</div>
+    <div class="c4-row" style="margin-bottom:24px">
+      <div class="c4-box person">
+        <span class="c4-icon">👤</span>
+        <div class="c4-type">Person</div>
+        <div class="c4-name">Customer</div>
+        <div class="c4-desc">Books service, approves estimate, tracks status, pays digitally</div>
+      </div>
+      <div class="c4-box person">
+        <span class="c4-icon">🔧</span>
+        <div class="c4-type">Person</div>
+        <div class="c4-name">Mechanic</div>
+        <div class="c4-desc">Receives job card on tablet, logs work done, uploads photos</div>
+      </div>
+      <div class="c4-box person">
+        <span class="c4-icon">👔</span>
+        <div class="c4-type">Person</div>
+        <div class="c4-name">Garage Manager</div>
+        <div class="c4-desc">Views analytics dashboard, manages inventory, monitors revenue</div>
+      </div>
+    </div>
+
+    <!-- Arrow down -->
+    <div style="display:flex;gap:16px;margin-bottom:8px;margin-left:60px">
+      <div class="arr-down"><div class="line"></div><div class="lbl">books, approves, pays</div></div>
+      <div style="width:60px"></div>
+      <div class="arr-down"><div class="line"></div><div class="lbl">logs work, inspects</div></div>
+      <div style="width:60px"></div>
+      <div class="arr-down"><div class="line"></div><div class="lbl">views reports</div></div>
+    </div>
+
+    <!-- Main system boundary -->
+    <div class="boundary sys-boundary" style="display:inline-block;width:100%;margin-bottom:20px">
+      <div class="boundary-label">Car Garage Digital System</div>
+      <div class="c4-row" style="justify-content:center">
+        <div class="c4-box system">
+          <span class="c4-icon">🏪</span>
+          <div class="c4-type">Software System</div>
+          <div class="c4-name">GaragePlug</div>
+          <div class="c4-desc">Core garage management platform. Handles all jobs, inventory, invoices, and customer communication</div>
+          <div class="c4-tech">No-Code SaaS · Free / $30 mo</div>
+        </div>
+        <div class="c4-box system">
+          <span class="c4-icon">📅</span>
+          <div class="c4-type">Software System</div>
+          <div class="c4-name">SimplyBook.me</div>
+          <div class="c4-desc">Online booking portal. Customer-facing scheduling page with auto-confirmation</div>
+          <div class="c4-tech">No-Code SaaS · Free / $10 mo</div>
+        </div>
+        <div class="c4-box system">
+          <span class="c4-icon">⚡</span>
+          <div class="c4-type">Software System</div>
+          <div class="c4-name">Zapier</div>
+          <div class="c4-desc">Automation bridge. Connects GaragePlug to Gmail for auto-ordering parts from suppliers</div>
+          <div class="c4-tech">Low-Code SaaS · Free / $9 mo</div>
+        </div>
+        <div class="c4-box system">
+          <span class="c4-icon">📊</span>
+          <div class="c4-type">Software System</div>
+          <div class="c4-name">Looker Studio</div>
+          <div class="c4-desc">Analytics dashboard. Connects to GaragePlug data export for revenue and KPI visualisation</div>
+          <div class="c4-tech">No-Code · Free (Google)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- External systems -->
+    <div style="margin-bottom:8px;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--dim);text-transform:uppercase">External Systems</div>
+    <div class="boundary ext-boundary" style="display:inline-block;width:100%">
+      <div class="boundary-label">External / Third-Party</div>
+      <div class="c4-row">
+        <div class="c4-box external">
+          <span class="c4-icon">💬</span>
+          <div class="c4-type">External System</div>
+          <div class="c4-name">WhatsApp Business</div>
+          <div class="c4-desc">Customer messaging. Sends confirmations, estimates, and pickup alerts</div>
+          <div class="c4-tech">No-Code · Free (Meta)</div>
+        </div>
+        <div class="c4-box external">
+          <span class="c4-icon">💳</span>
+          <div class="c4-type">External System</div>
+          <div class="c4-name">SumUp / PayPal</div>
+          <div class="c4-desc">Digital payment processing. Tap-to-pay or online payment links</div>
+          <div class="c4-tech">No-Code · 1.7–2.9% per tx</div>
+        </div>
+        <div class="c4-box external">
+          <span class="c4-icon">🔌</span>
+          <div class="c4-type">External System</div>
+          <div class="c4-name">OBD-II + Car Scanner</div>
+          <div class="c4-desc">Car diagnostic hardware. Reads fault codes and sends to mechanic tablet</div>
+          <div class="c4-tech">Hardware · EUR 30–80 one-time</div>
+        </div>
+        <div class="c4-box external">
+          <span class="c4-icon">📦</span>
+          <div class="c4-type">External System</div>
+          <div class="c4-name">Parts Supplier</div>
+          <div class="c4-desc">Receives auto-generated purchase orders by email when stock is low</div>
+          <div class="c4-tech">Email (via Zapier + Gmail)</div>
+        </div>
+        <div class="c4-box external">
+          <span class="c4-icon">🚗</span>
+          <div class="c4-type">External System</div>
+          <div class="c4-name">VIN Database</div>
+          <div class="c4-desc">Provides vehicle details (make, model, year, engine) from VIN number</div>
+          <div class="c4-tech">Built into GaragePlug</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <div class="leg-item"><div class="leg-box" style="background:var(--person);border-color:var(--person-b)"></div>Person (user)</div>
+      <div class="leg-item"><div class="leg-box" style="background:var(--system);border-color:var(--system-b)"></div>Software System (our tools)</div>
+      <div class="leg-item"><div class="leg-box" style="background:var(--ext);border-color:var(--ext-b)"></div>External System (third-party)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     C2 — CONTAINER
+═══════════════════════════════════════════ -->
+<div class="page" id="c2">
+  <div class="page-head">
+    <div class="level-tag">Level 2 — Container Diagram</div>
+    <h2>What are the main applications and how do they communicate?</h2>
+    <p>Zooms into the garage digital system. Shows each application (container) as a separate box — what it does, what technology powers it, and how data flows between them.</p>
+  </div>
+
+  <div class="diagram">
+
+    <!-- Top row: Users -->
+    <div class="c4-row" style="margin-bottom:6px;justify-content:center">
+      <div class="c4-box person" style="min-width:130px;max-width:150px">
+        <span class="c4-icon">👤</span><div class="c4-type">Person</div>
+        <div class="c4-name">Customer</div>
+        <div class="c4-desc">Books, approves, tracks, pays</div>
+      </div>
+      <div class="c4-box person" style="min-width:130px;max-width:150px">
+        <span class="c4-icon">🔧</span><div class="c4-type">Person</div>
+        <div class="c4-name">Mechanic</div>
+        <div class="c4-desc">Works via tablet app</div>
+      </div>
+      <div class="c4-box person" style="min-width:130px;max-width:150px">
+        <span class="c4-icon">👔</span><div class="c4-type">Person</div>
+        <div class="c4-name">Manager</div>
+        <div class="c4-desc">Views reports & analytics</div>
+      </div>
+    </div>
+
+    <!-- Arrows down -->
+    <div style="text-align:center;padding:4px 0;font-family:'IBM Plex Mono',monospace;font-size:8.5px;color:var(--dim)">↓ uses via browser / app / tablet</div>
+
+    <!-- Main system boundary -->
+    <div class="boundary sys-boundary" style="width:100%;margin-bottom:16px">
+      <div class="boundary-label">Car Garage System Boundary</div>
+
+      <!-- Row 1: Customer-facing + Core -->
+      <div style="margin-bottom:8px;font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--acc2);text-transform:uppercase">Customer-Facing</div>
+      <div class="c4-row" style="margin-bottom:20px">
+        <div class="c4-box container">
+          <span class="c4-icon">📅</span>
+          <div class="c4-type">Container · Web App</div>
+          <div class="c4-name">Booking Portal</div>
+          <div class="c4-desc">Customer-facing scheduling page. Picks date, service, gets auto-confirmation</div>
+          <div class="c4-tech">SimplyBook.me · No-Code</div>
+        </div>
+        <div style="display:flex;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--dim)">→ booking data →</div>
+        <div class="c4-box container" style="border-color:#00d4aa;background:#0a2a28">
+          <span class="c4-icon">🏪</span>
+          <div class="c4-type">Container · Core Platform</div>
+          <div class="c4-name">GaragePlug GMS</div>
+          <div class="c4-desc">Central hub. Manages all job cards, inventory, customers, invoices, and staff</div>
+          <div class="c4-tech">GaragePlug SaaS · No-Code</div>
+        </div>
+        <div style="display:flex;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--dim)">← job status / alerts ←</div>
+        <div class="c4-box container">
+          <span class="c4-icon">📱</span>
+          <div class="c4-type">Container · Mobile App</div>
+          <div class="c4-name">Customer Portal</div>
+          <div class="c4-desc">Live job tracking, estimate approval, invoice view, and payment</div>
+          <div class="c4-tech">GaragePlug Portal · No-Code</div>
+        </div>
+      </div>
+
+      <!-- Row 2: Internal tools -->
+      <div style="margin-bottom:8px;font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--acc2);text-transform:uppercase">Internal Tools</div>
+      <div class="c4-row" style="margin-bottom:8px">
+        <div class="c4-box container">
+          <span class="c4-icon">📲</span>
+          <div class="c4-type">Container · Tablet App</div>
+          <div class="c4-name">Mechanic Tablet</div>
+          <div class="c4-desc">Receives job cards, logs work done, completes digital checklist, uploads photos</div>
+          <div class="c4-tech">GaragePlug App · No-Code</div>
+        </div>
+        <div style="display:flex;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--dim)">→ work logs →</div>
+        <div class="c4-box container" style="border-color:#00d4aa;background:#0a2a28">
+          <span class="c4-icon">🏪</span>
+          <div class="c4-type">Container · Core Platform</div>
+          <div class="c4-name">GaragePlug GMS</div>
+          <div class="c4-desc">(same central hub)</div>
+          <div class="c4-tech">GaragePlug SaaS · No-Code</div>
+        </div>
+        <div style="display:flex;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--dim)">→ CSV export →</div>
+        <div class="c4-box container">
+          <span class="c4-icon">📊</span>
+          <div class="c4-type">Container · BI Dashboard</div>
+          <div class="c4-name">Looker Studio</div>
+          <div class="c4-desc">Revenue, KPIs, mechanic performance, and demand forecasting charts</div>
+          <div class="c4-tech">Google Looker Studio · No-Code · Free</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- External -->
+    <div style="margin-bottom:8px;font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--dim);text-transform:uppercase">External Systems (called by GaragePlug + Zapier)</div>
+    <div class="boundary ext-boundary" style="width:100%">
+      <div class="boundary-label">External</div>
+      <div class="c4-row">
+        <div class="c4-box external" style="min-width:140px;max-width:170px">
+          <span class="c4-icon">💬</span><div class="c4-type">External</div>
+          <div class="c4-name">WhatsApp Business</div>
+          <div class="c4-desc">Sends SMS/WhatsApp messages to customers at key process steps</div>
+        </div>
+        <div class="c4-box external" style="min-width:140px;max-width:170px">
+          <span class="c4-icon">💳</span><div class="c4-type">External</div>
+          <div class="c4-name">SumUp / PayPal</div>
+          <div class="c4-desc">Processes digital payment from customer at pickup</div>
+        </div>
+        <div class="c4-box external" style="min-width:140px;max-width:170px">
+          <span class="c4-icon">⚡</span><div class="c4-type">External · Automation</div>
+          <div class="c4-name">Zapier</div>
+          <div class="c4-desc">Triggers auto-order email to supplier when GaragePlug stock is low</div>
+        </div>
+        <div class="c4-box external" style="min-width:140px;max-width:170px">
+          <span class="c4-icon">🔌</span><div class="c4-type">External · Hardware</div>
+          <div class="c4-name">OBD-II Scanner</div>
+          <div class="c4-desc">Reads vehicle fault codes. Mechanic types results into GaragePlug</div>
+        </div>
+        <div class="c4-box external" style="min-width:140px;max-width:170px">
+          <span class="c4-icon">📦</span><div class="c4-type">External</div>
+          <div class="c4-name">Parts Supplier</div>
+          <div class="c4-desc">Receives auto-generated purchase orders by email via Gmail + Zapier</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <div class="leg-item"><div class="leg-box" style="background:var(--person);border-color:var(--person-b)"></div>Person</div>
+      <div class="leg-item"><div class="leg-box" style="background:var(--cont);border-color:var(--cont-b)"></div>Container (application/service)</div>
+      <div class="leg-item"><div class="leg-box" style="background:#0a2a28;border-color:#00d4aa"></div>Core hub (GaragePlug)</div>
+      <div class="leg-item"><div class="leg-box" style="background:var(--ext);border-color:var(--ext-b)"></div>External system</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     C3 — COMPONENT
+═══════════════════════════════════════════ -->
+<div class="page" id="c3">
+  <div class="page-head">
+    <div class="level-tag">Level 3 — Component Diagram</div>
+    <h2>What are the components inside GaragePlug (the core system)?</h2>
+    <p>Zooms inside the GaragePlug GMS container and shows each functional module, what it does in the process, and which BPMN step it powers.</p>
+  </div>
+
+  <div class="diagram">
+
+    <div class="boundary sys-boundary" style="width:100%;margin-bottom:20px">
+      <div class="boundary-label">GaragePlug GMS — Internal Components</div>
+
+      <!-- Row 1 -->
+      <div class="c4-row" style="margin-bottom:16px">
+        <div class="c4-box component">
+          <span class="c4-icon">🔲</span>
+          <div class="c4-type">Component</div>
+          <div class="c4-name">QR Check-in Module</div>
+          <div class="c4-desc">Generates unique QR codes per booking. When scanned at drop-off, logs arrival time and triggers job card creation</div>
+          <div class="c4-tech">BPMN Step: Drop Off Car</div>
+        </div>
+        <div class="c4-box component">
+          <span class="c4-icon">🗃️</span>
+          <div class="c4-type">Component</div>
+          <div class="c4-name">Job Card Engine</div>
+          <div class="c4-desc">Creates and manages digital job records. Integrates VIN lookup to auto-fill vehicle details. Links customer, vehicle, parts, and mechanic</div>
+          <div class="c4-tech">BPMN Step: Create Digital Job Card</div>
+        </div>
+        <div class="c4-box component">
+          <span class="c4-icon">📦</span>
+          <div class="c4-type">Component</div>
+          <div class="c4-name">Inventory Manager</div>
+          <div class="c4-desc">Tracks real-time parts stock. Checks availability per job. Sends low-stock alert to Zapier for auto-reorder. Auto-deducts when parts are used</div>
+          <div class="c4-tech">BPMN Step: Auto Parts Check</div>
+        </div>
+        <div class="c4-box component">
+          <span class="c4-icon">💰</span>
+          <div class="c4-type">Component</div>
+          <div class="c4-name">Estimate Generator</div>
+          <div class="c4-desc">Calculates total cost from parts prices + labour rate × time. Generates itemised PDF estimate. Sends shareable link to customer by SMS/WhatsApp</div>
+          <div class="c4-tech">BPMN Step: Generate Digital Estimate</div>
+        </div>
+      </div>
+
+      <!-- Row 2 -->
+      <div class="c4-row" style="margin-bottom:16px">
+        <div class="c4-box component">
+          <span class="c4-icon">📲</span>
+          <div class="c4-type">Component</div>
+          <div class="c4-name">Mechanic Tablet App</div>
+          <div class="c4-desc">Mobile interface for mechanics. Displays assigned jobs, parts list, digital checklist. Captures photos. Marks job complete to trigger invoice</div>
+          <div class="c4-tech">BPMN Steps: Receive Job Card, Log Work, Photo Upload</div>
+        </div>
+        <div class="c4-box component">
+          <span class="c4-icon">📄</span>
+          <div class="c4-type">Component</div>
+          <div class="c4-name">Invoice Engine</div>
+          <div class="c4-desc">Auto-generates PDF invoice when job is marked complete. Applies approved estimate or calculates from job record. Sends push notification to customer</div>
+          <div class="c4-tech">BPMN Step: Generate E-Invoice</div>
+        </div>
+        <div class="c4-box component">
+          <span class="c4-icon">🔔</span>
+          <div class="c4-type">Component</div>
+          <div class="c4-name">Notification Service</div>
+          <div class="c4-desc">Sends automated SMS messages at key events: booking confirmed, car received, estimate ready, car ready, invoice sent. Integrates with WhatsApp Business</div>
+          <div class="c4-tech">BPMN Steps: All notification steps</div>
+        </div>
+        <div class="c4-box component">
+          <span class="c4-icon">📊</span>
+          <div class="c4-type">Component</div>
+          <div class="c4-name">Reporting Module</div>
+          <div class="c4-desc">Built-in dashboard for revenue, job count, mechanic utilisation. Exports data as CSV for Google Looker Studio for deeper custom analytics</div>
+          <div class="c4-tech">BPMN Step: Update Analytics Dashboard</div>
+        </div>
+      </div>
+
+      <!-- Row 3 -->
+      <div class="c4-row">
+        <div class="c4-box component">
+          <span class="c4-icon">👥</span>
+          <div class="c4-type">Component</div>
+          <div class="c4-name">Customer Database</div>
+          <div class="c4-desc">Stores customer profiles, contact details, vehicle history, past service records, and communication logs. Linked to job cards and invoices</div>
+          <div class="c4-tech">Supports: All customer-facing steps</div>
+        </div>
+        <div class="c4-box component">
+          <span class="c4-icon">🚗</span>
+          <div class="c4-type">Component</div>
+          <div class="c4-name">Vehicle Registry</div>
+          <div class="c4-desc">Stores vehicle records linked by VIN. Integrates with external VIN decoder to auto-populate make, model, year, engine type at job card creation</div>
+          <div class="c4-tech">Supports: Create Job Card step</div>
+        </div>
+        <div class="c4-box component">
+          <span class="c4-icon">✅</span>
+          <div class="c4-type">Component</div>
+          <div class="c4-name">Approval Tracker</div>
+          <div class="c4-desc">Records customer approval or rejection of cost estimates with timestamp. Creates digital audit trail. Links back to job card for compliance</div>
+          <div class="c4-tech">BPMN Step: Approve Cost Estimate</div>
+        </div>
+        <div class="c4-box component">
+          <span class="c4-icon">🔗</span>
+          <div class="c4-type">Component</div>
+          <div class="c4-name">Integration API</div>
+          <div class="c4-desc">Connects GaragePlug to external tools: Zapier (stock alerts), SimplyBook.me (bookings), payment processors (SumUp/PayPal), and Looker Studio (data export)</div>
+          <div class="c4-tech">Supports: All cross-system flows</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <div class="leg-item"><div class="leg-box" style="background:var(--comp);border-color:var(--comp-b)"></div>Component (functional module inside GaragePlug)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     TOOL SUMMARY
+═══════════════════════════════════════════ -->
+<div class="page" id="c4t">
+  <div class="page-head">
+    <div class="level-tag">Tool Reference</div>
+    <h2>Complete Technology Stack — At a Glance</h2>
+    <p>Maps every tool to its C4 level, BPMN process steps, setup complexity, and cost. All no-code or low-code.</p>
+  </div>
+
+  <div class="diagram">
+    <table class="rel-table">
+      <thead>
+        <tr>
+          <th>Tool</th>
+          <th>C4 Level</th>
+          <th>BPMN Steps Powered</th>
+          <th>Who Uses It</th>
+          <th>Type</th>
+          <th>Cost</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong style="color:var(--text)">🏪 GaragePlug</strong><br><span style="font-size:10px">garageplug.com</span></td>
+          <td>Container + Components</td>
+          <td>QR check-in, Job card, Parts check, Estimate, Mechanic tablet, Invoice, Notifications, Reports</td>
+          <td>Customer · Mechanic · Manager</td>
+          <td><span class="tag nc">No-Code</span></td>
+          <td>Free / $30 mo</td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--text)">📅 SimplyBook.me</strong><br><span style="font-size:10px">simplybook.me</span></td>
+          <td>Container · Web App</td>
+          <td>Submit Booking · Receive Confirmation</td>
+          <td>Customer</td>
+          <td><span class="tag nc">No-Code</span></td>
+          <td>Free / $10 mo</td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--text)">💬 WhatsApp Business</strong><br><span style="font-size:10px">business.whatsapp.com</span></td>
+          <td>External System</td>
+          <td>Confirmation · Estimate approval · Photo sharing · Pickup alert</td>
+          <td>Customer · Mechanic</td>
+          <td><span class="tag nc">No-Code</span></td>
+          <td>Free</td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--text)">⚡ Zapier / Make</strong><br><span style="font-size:10px">zapier.com / make.com</span></td>
+          <td>External · Automation</td>
+          <td>Auto-Order Parts from Supplier</td>
+          <td>System (automatic)</td>
+          <td><span class="tag lc">Low-Code</span></td>
+          <td>Free / $9 mo</td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--text)">💳 SumUp / PayPal Business</strong><br><span style="font-size:10px">sumup.com / paypal.com</span></td>
+          <td>External System</td>
+          <td>Collect Car & Pay</td>
+          <td>Customer</td>
+          <td><span class="tag nc">No-Code</span></td>
+          <td>1.7–2.9% per tx</td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--text)">🔌 OBD-II Scanner + Car Scanner App</strong><br><span style="font-size:10px">OBDLink MX+ · Car Scanner (iOS/Android)</span></td>
+          <td>External · Hardware</td>
+          <td>Inspect Car (OBD-II)</td>
+          <td>Mechanic</td>
+          <td><span class="tag hw">Hardware</span></td>
+          <td>EUR 30–80 one-time</td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--text)">📊 Google Looker Studio</strong><br><span style="font-size:10px">lookerstudio.google.com</span></td>
+          <td>Container · BI Dashboard</td>
+          <td>Update Analytics Dashboard</td>
+          <td>Manager</td>
+          <td><span class="tag nc">No-Code</span></td>
+          <td>Free</td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--text)">📁 Google Sheets</strong><br><span style="font-size:10px">sheets.google.com</span></td>
+          <td>Data Bridge</td>
+          <td>GaragePlug CSV export → Looker Studio data source</td>
+          <td>Manager</td>
+          <td><span class="tag nc">No-Code</span></td>
+          <td>Free</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:28px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:14px">C4 Relationship Map</div>
+      <table class="rel-table">
+        <thead>
+          <tr><th>From</th><th>Relationship</th><th>To</th><th>Protocol / Method</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Customer</td><td>books appointment via</td><td>SimplyBook.me</td><td>Web browser / shared link</td></tr>
+          <tr><td>SimplyBook.me</td><td>sends booking data to</td><td>GaragePlug GMS</td><td>API / manual sync</td></tr>
+          <tr><td>Customer (QR scan)</td><td>triggers job card creation in</td><td>GaragePlug GMS</td><td>QR code → HTTP</td></tr>
+          <tr><td>GaragePlug GMS</td><td>sends SMS/WhatsApp via</td><td>WhatsApp Business</td><td>GaragePlug built-in SMS</td></tr>
+          <tr><td>GaragePlug GMS</td><td>fires low-stock alert to</td><td>Zapier</td><td>Webhook</td></tr>
+          <tr><td>Zapier</td><td>sends purchase order email to</td><td>Parts Supplier</td><td>Gmail → Email</td></tr>
+          <tr><td>Mechanic Tablet App</td><td>reads &amp; writes job data to</td><td>GaragePlug GMS</td><td>GaragePlug mobile app API</td></tr>
+          <tr><td>OBD-II Scanner</td><td>sends fault codes to</td><td>Car Scanner App (tablet)</td><td>Bluetooth</td></tr>
+          <tr><td>GaragePlug GMS</td><td>generates invoice and notifies via</td><td>WhatsApp Business</td><td>SMS push notification</td></tr>
+          <tr><td>Customer</td><td>pays via</td><td>SumUp / PayPal</td><td>Tap-to-pay / Payment link</td></tr>
+          <tr><td>GaragePlug GMS</td><td>exports CSV data to</td><td>Google Sheets</td><td>CSV download / manual import</td></tr>
+          <tr><td>Google Sheets</td><td>feeds data to</td><td>Looker Studio</td><td>Google Sheets connector</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+function tab(el, pageId) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(pageId).classList.add('active');
+}
+</script>
+</body>
+</html>
