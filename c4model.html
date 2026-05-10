@@ -7,150 +7,200 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:      #0e1117;
-  --surface: #161b27;
-  --surface2:#1e253a;
-  --border:  #2a3350;
-  --text:    #e2e8f0;
-  --dim:     #6b7a99;
-  --acc:     #4a9eff;
-  --acc2:    #00d4aa;
-  --acc3:    #f59e0b;
+  /* Light theme */
+  --bg:       #f4f6f9;
+  --surface:  #ffffff;
+  --surface2: #f0f2f7;
+  --border:   #d4d9e8;
+  --text:     #1a1f36;
+  --dim:      #6b7a9a;
+  --rule:     #e4e8f0;
 
-  --person:  #083d6e; --person-b:#1a6eba;
-  --system:  #1a3a1a; --system-b:#2d7a2d;
-  --ext:     #1e1e1e; --ext-b:   #4a4a4a;
-  --cont:    #1a2e4a; --cont-b:  #2563eb;
-  --comp:    #2a1a3a; --comp-b:  #7c3aed;
-  --db:      #1a1a2e; --db-b:    #6366f1;
-  --dbext:   #1e1a0a; --dbext-b: #92400e;
+  /* Accent */
+  --acc:      #2563eb;
+  --acc2:     #059669;
+  --acc3:     #d97706;
+
+  /* C4 box colours — light mode */
+  --person:   #dbeafe; --person-b: #3b82f6; --person-t: #1e40af;
+  --system:   #dcfce7; --system-b: #22c55e; --system-t: #15803d;
+  --hub-bg:   #d1fae5; --hub-b:    #059669; --hub-t:    #065f46;
+  --ext:      #f1f5f9; --ext-b:    #94a3b8; --ext-t:    #475569;
+  --cont:     #eff6ff; --cont-b:   #3b82f6; --cont-t:   #1d4ed8;
+  --comp:     #faf5ff; --comp-b:   #a855f7; --comp-t:   #7e22ce;
+  --auto:     #fffbeb; --auto-b:   #f59e0b; --auto-t:   #92400e;
+
+  /* Database colours */
+  --db-op:    #eff6ff; --db-op-b:  #3b82f6; --db-op-cap:#dbeafe;
+  --db-crm:   #fdf4ff; --db-crm-b: #a855f7; --db-crm-cap:#fae8ff;
+  --db-an:    #fff7ed; --db-an-b:  #f97316; --db-an-cap:#ffedd5;
+  --db-ext:   #f8fafc; --db-ext-b: #94a3b8; --db-ext-cap:#f1f5f9;
+
+  --shadow:   0 2px 8px rgba(0,0,0,.06);
+  --shadow-md:0 4px 16px rgba(0,0,0,.10);
 }
+
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.6;min-height:100vh}
 
-/* NAV */
-.nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32px;display:flex;align-items:stretch;gap:0;overflow-x:auto}
-.nav-tab{padding:14px 20px;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;user-select:none}
+/* ── NAV ── */
+.nav{background:var(--surface);border-bottom:2px solid var(--border);padding:0 32px;display:flex;align-items:stretch;gap:0;overflow-x:auto;box-shadow:var(--shadow)}
+.nav-brand{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;color:var(--acc2);padding:0 20px 0 0;border-right:1px solid var(--border);margin-right:8px;display:flex;align-items:center;white-space:nowrap;gap:8px}
+.nav-tab{padding:14px 18px;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);border-bottom:3px solid transparent;transition:all .2s;white-space:nowrap;user-select:none}
 .nav-tab:hover{color:var(--text);background:var(--surface2)}
-.nav-tab.active{color:var(--acc);border-bottom-color:var(--acc)}
-.nav-brand{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--acc2);padding:14px 20px 14px 0;border-right:1px solid var(--border);margin-right:10px;white-space:nowrap;display:flex;align-items:center}
+.nav-tab.active{color:var(--acc);border-bottom-color:var(--acc);font-weight:600}
 
-/* PAGES */
-.page{display:none;padding:28px 32px}
+/* ── PAGES ── */
+.page{display:none;padding:28px 32px;max-width:1400px;margin:0 auto}
 .page.active{display:block}
 
-/* PAGE HEADER */
-.page-head{margin-bottom:24px}
-.level-tag{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--acc2);margin-bottom:5px}
-.page-head h2{font-size:20px;font-weight:600;margin-bottom:5px}
-.page-head p{color:var(--dim);font-size:12.5px;max-width:640px}
+/* ── PAGE HEADER ── */
+.page-head{margin-bottom:22px}
+.level-tag{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--acc2);margin-bottom:5px;font-weight:600}
+.page-head h2{font-size:20px;font-weight:700;margin-bottom:5px;color:var(--text)}
+.page-head p{color:var(--dim);font-size:12.5px;max-width:680px;line-height:1.6}
 
-/* CALLOUT */
-.callout{background:var(--surface2);border:1px solid var(--border);border-left:3px solid var(--acc2);border-radius:6px;padding:10px 14px;margin-bottom:20px;font-size:12px;color:#8899bb;line-height:1.55}
-.callout strong{color:var(--text)}
+/* ── CALLOUT ── */
+.callout{background:#eff6ff;border:1px solid #bfdbfe;border-left:3px solid var(--acc);border-radius:6px;padding:10px 14px;margin-bottom:20px;font-size:12px;color:#1e40af;line-height:1.55}
+.callout strong{color:#1d4ed8}
+.callout.green{background:#f0fdf4;border-color:#bbf7d0;border-left-color:var(--acc2);color:#166534}
+.callout.green strong{color:#15803d}
 
-/* DIAGRAM WRAPPER */
-.diagram{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:28px;overflow-x:auto}
+/* ── DIAGRAM WRAPPER ── */
+.diagram{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px;overflow-x:auto;box-shadow:var(--shadow)}
 
-/* BOUNDARY */
-.boundary{border:2px dashed;border-radius:8px;padding:18px 16px 14px;margin-bottom:16px;position:relative}
-.boundary-label{position:absolute;top:-10px;left:14px;font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;padding:2px 8px;border-radius:3px}
-.sys-boundary{border-color:#2d7a2d;background:rgba(29,78,29,.06)}
-.sys-boundary .boundary-label{background:#1a3a1a;color:#4ade80}
-.ext-boundary{border-color:#4a4a4a;background:rgba(50,50,50,.06)}
-.ext-boundary .boundary-label{background:#1e1e1e;color:#888}
+/* ── SECTION LABEL ── */
+.sec-lbl{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);margin-bottom:10px;margin-top:4px;font-weight:600}
 
-/* FLEX ROWS */
+/* ── BOUNDARY BOX ── */
+.boundary{border:2px dashed;border-radius:10px;padding:18px 16px 14px;margin-bottom:16px;position:relative}
+.boundary-label{position:absolute;top:-10px;left:14px;font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:2px 10px;border-radius:4px;font-weight:600}
+.b-sys{border-color:#22c55e;background:rgba(34,197,94,.05)}
+.b-sys .boundary-label{background:#dcfce7;color:#15803d;border:1px solid #bbf7d0}
+.b-ext{border-color:#94a3b8;background:rgba(148,163,184,.05)}
+.b-ext .boundary-label{background:#f1f5f9;color:#475569;border:1px solid #cbd5e1}
+.b-storage{border-color:#f97316;border-style:solid;border-width:2px;background:rgba(249,115,22,.04)}
+.b-storage .boundary-label{background:#fff7ed;color:#c2410c;border:1px solid #fed7aa}
+.b-crm{border-color:#a855f7;border-style:solid;border-width:2px;background:rgba(168,85,247,.04)}
+.b-crm .boundary-label{background:#fdf4ff;color:#7e22ce;border:1px solid #e9d5ff}
+
+/* ── FLEX ROW ── */
 .c4-row{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap;margin-bottom:12px}
 .c4-row:last-child{margin-bottom:0}
 
-/* ── BOX TYPES ── */
-.c4-box{border-radius:8px;padding:12px 14px;min-width:150px;max-width:195px;border:1.5px solid;transition:transform .15s,box-shadow .15s;flex-shrink:0}
-.c4-box:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.4)}
+/* ── C4 BOX ── */
+.c4-box{border-radius:8px;padding:12px 14px;min-width:148px;max-width:190px;border:1.5px solid;flex-shrink:0;transition:transform .15s,box-shadow .15s;background:var(--surface)}
+.c4-box:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
 .c4-box.person   {background:var(--person); border-color:var(--person-b)}
 .c4-box.system   {background:var(--system); border-color:var(--system-b)}
+.c4-box.hub      {background:var(--hub-bg); border-color:var(--hub-b); border-width:2px}
 .c4-box.external {background:var(--ext);    border-color:var(--ext-b)}
 .c4-box.container{background:var(--cont);   border-color:var(--cont-b)}
 .c4-box.component{background:var(--comp);   border-color:var(--comp-b)}
-.c4-box.hub      {background:#0a2a28;       border-color:#00d4aa}
+.c4-box.automate {background:var(--auto);   border-color:var(--auto-b)}
 
-/* ── DATABASE BOX ── */
-/* Looks like a cylinder using top ellipse via pseudo-element trick in pure CSS */
-.c4-db{
-  border-radius:6px;
-  padding:0;
-  min-width:150px;max-width:195px;
-  border:1.5px solid;
-  flex-shrink:0;
-  overflow:hidden;
-  transition:transform .15s,box-shadow .15s;
-}
-.c4-db:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.4)}
-.c4-db.internal{background:var(--db);   border-color:var(--db-b)}
-.c4-db.external-db{background:var(--dbext); border-color:var(--dbext-b)}
+.c4-icon{font-size:20px;margin-bottom:5px;display:block;line-height:1}
+.c4-type{font-family:'IBM Plex Mono',monospace;font-size:7.5px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;font-weight:500}
+.c4-box.person   .c4-type{color:var(--person-t)}
+.c4-box.system   .c4-type{color:var(--system-t)}
+.c4-box.hub      .c4-type{color:var(--hub-t)}
+.c4-box.external .c4-type{color:var(--ext-t)}
+.c4-box.container.c4-type{color:var(--cont-t)}
+.c4-box.component .c4-type{color:var(--comp-t)}
+.c4-box.automate .c4-type{color:var(--auto-t)}
+.c4-name{font-size:11.5px;font-weight:700;line-height:1.3;margin-bottom:3px;color:var(--text)}
+.c4-desc{font-size:10px;color:var(--dim);line-height:1.4}
+.c4-tech{font-family:'IBM Plex Mono',monospace;font-size:7.5px;margin-top:6px;padding-top:6px;border-top:1px solid var(--rule);font-weight:500}
+.c4-box.person    .c4-tech{color:var(--person-t)}
+.c4-box.system    .c4-tech{color:var(--system-t)}
+.c4-box.hub       .c4-tech{color:var(--hub-t)}
+.c4-box.container .c4-tech{color:var(--cont-t)}
+.c4-box.component .c4-tech{color:var(--comp-t)}
+.c4-box.automate  .c4-tech{color:var(--auto-t)}
+.c4-box.external  .c4-tech{color:var(--ext-t)}
 
-/* Cylinder cap */
-.db-cap{
-  height:22px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:14px;
-  border-bottom:1px solid;
-  position:relative;
-}
-.c4-db.internal .db-cap  {background:#12122a;border-color:var(--db-b)}
-.c4-db.external-db .db-cap{background:#1a1400;border-color:var(--dbext-b)}
-/* Ellipse lines on cap */
-.db-cap::before,.db-cap::after{
-  content:'';position:absolute;left:50%;transform:translateX(-50%);
-  width:calc(100% - 16px);height:6px;
-  border:1px solid;border-radius:50%;
-}
-.c4-db.internal .db-cap::before,.c4-db.internal .db-cap::after{border-color:var(--db-b)}
-.c4-db.external-db .db-cap::before,.c4-db.external-db .db-cap::after{border-color:var(--dbext-b)}
-.db-cap::before{top:3px}
-.db-cap::after{top:10px;opacity:.4}
+/* ── DATABASE CYLINDER ── */
+.c4-db{border-radius:6px;min-width:148px;max-width:190px;border:1.5px solid;flex-shrink:0;overflow:hidden;transition:transform .15s,box-shadow .15s}
+.c4-db:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.c4-db.db-op  {border-color:var(--db-op-b)}
+.c4-db.db-crm {border-color:var(--db-crm-b)}
+.c4-db.db-an  {border-color:var(--db-an-b)}
+.c4-db.db-ext {border-color:var(--db-ext-b)}
+.db-cap{height:24px;display:flex;align-items:center;justify-content:center;font-size:13px;border-bottom:1.5px solid;position:relative}
+.c4-db.db-op  .db-cap{background:var(--db-op-cap); border-color:var(--db-op-b)}
+.c4-db.db-crm .db-cap{background:var(--db-crm-cap);border-color:var(--db-crm-b)}
+.c4-db.db-an  .db-cap{background:var(--db-an-cap); border-color:var(--db-an-b)}
+.c4-db.db-ext .db-cap{background:var(--db-ext-cap);border-color:var(--db-ext-b)}
+.db-cap::before,.db-cap::after{content:'';position:absolute;left:50%;transform:translateX(-50%);width:calc(100% - 20px);height:7px;border:1px solid;border-radius:50%}
+.c4-db.db-op  .db-cap::before,.c4-db.db-op  .db-cap::after{border-color:var(--db-op-b)}
+.c4-db.db-crm .db-cap::before,.c4-db.db-crm .db-cap::after{border-color:var(--db-crm-b)}
+.c4-db.db-an  .db-cap::before,.c4-db.db-an  .db-cap::after{border-color:var(--db-an-b)}
+.c4-db.db-ext .db-cap::before,.c4-db.db-ext .db-cap::after{border-color:var(--db-ext-b)}
+.db-cap::before{top:2px} .db-cap::after{top:9px;opacity:.35}
+.db-body{padding:9px 12px}
+.c4-db.db-op  .db-body{background:var(--db-op)}
+.c4-db.db-crm .db-body{background:var(--db-crm)}
+.c4-db.db-an  .db-body{background:var(--db-an)}
+.c4-db.db-ext .db-body{background:var(--db-ext)}
+.db-type{font-family:'IBM Plex Mono',monospace;font-size:7.5px;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;margin-bottom:2px}
+.c4-db.db-op  .db-type{color:var(--db-op-b)}
+.c4-db.db-crm .db-type{color:var(--db-crm-b)}
+.c4-db.db-an  .db-type{color:var(--db-an-b)}
+.c4-db.db-ext .db-type{color:var(--db-ext-b)}
+.db-name{font-size:11px;font-weight:700;color:var(--text);margin-bottom:3px;line-height:1.3}
+.db-desc{font-size:9.5px;color:var(--dim);line-height:1.4}
+.db-tech{font-family:'IBM Plex Mono',monospace;font-size:7.5px;margin-top:5px;padding-top:5px;border-top:1px solid var(--rule);font-weight:500}
+.c4-db.db-op  .db-tech{color:var(--db-op-b)}
+.c4-db.db-crm .db-tech{color:var(--db-crm-b)}
+.c4-db.db-an  .db-tech{color:var(--db-an-b)}
+.c4-db.db-ext .db-tech{color:var(--db-ext-b)}
 
-.db-body{padding:10px 12px}
+/* ── ARROWS ── */
+.arr-row{display:flex;align-items:center;gap:0;margin:2px 0;flex:1}
+.arr-line{flex:1;height:1.5px;background:var(--rule)}
+.arr-lbl{font-family:'IBM Plex Mono',monospace;font-size:7.5px;color:var(--dim);white-space:nowrap;padding:0 7px;text-align:center}
+.arr-col{display:flex;flex-direction:column;align-items:center;gap:2px;padding:2px 0}
+.vline{width:1.5px;background:var(--rule)}
+.vlbl{font-family:'IBM Plex Mono',monospace;font-size:7.5px;color:var(--dim);white-space:nowrap}
+.vline-op {background:#3b82f6} .vlbl-op {color:#3b82f6}
+.vline-crm{background:#a855f7} .vlbl-crm{color:#a855f7}
+.vline-an {background:#f97316} .vlbl-an {color:#f97316}
 
-.c4-icon{font-size:18px;margin-bottom:4px;display:block}
-.c4-type{font-family:'IBM Plex Mono',monospace;font-size:7.5px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;opacity:.65}
-.c4-name{font-size:11.5px;font-weight:600;line-height:1.3;margin-bottom:3px}
-.c4-desc{font-size:10px;color:#8899bb;line-height:1.4}
-.c4-tech{font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--acc);margin-top:5px;padding-top:5px;border-top:1px solid rgba(255,255,255,.07)}
+/* ── STORAGE LAYER BANNER ── */
+.storage-banner{display:flex;gap:12px;align-items:stretch;margin:16px 0}
+.storage-layer{flex:1;border-radius:8px;border:2px solid;padding:12px 14px}
+.sl-op {border-color:var(--db-op-b); background:var(--db-op)}
+.sl-crm{border-color:var(--db-crm-b);background:var(--db-crm)}
+.sl-an {border-color:var(--db-an-b); background:var(--db-an)}
+.sl-title{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:4px}
+.sl-op  .sl-title{color:var(--db-op-b)}
+.sl-crm .sl-title{color:var(--db-crm-b)}
+.sl-an  .sl-title{color:var(--db-an-b)}
+.sl-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px}
+.sl-desc{font-size:11px;color:var(--dim);line-height:1.5}
 
-/* ARROW helpers */
-.arr-row{display:flex;align-items:center;gap:0;margin:4px 0}
-.arr-line{flex:1;height:1px;background:var(--border)}
-.arr-lbl{font-family:'IBM Plex Mono',monospace;font-size:7.5px;color:var(--dim);white-space:nowrap;padding:0 6px;text-align:center}
-.arr-col{display:flex;flex-direction:column;align-items:center;gap:2px;padding:3px 0}
-.arr-col .vline{width:1px;height:18px;background:var(--border)}
-.arr-col .vlbl{font-family:'IBM Plex Mono',monospace;font-size:7.5px;color:var(--dim);white-space:nowrap}
+/* ── DIVIDER ── */
+.divider{height:1px;background:var(--rule);margin:14px 0}
 
-/* SECTION LABEL */
-.sec-lbl{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--acc2);margin-bottom:8px;margin-top:4px}
-
-/* LEGEND */
-.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:18px;padding-top:14px;border-top:1px solid var(--border)}
+/* ── LEGEND ── */
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:18px;padding-top:14px;border-top:1px solid var(--rule)}
 .leg-item{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--dim);font-family:'IBM Plex Mono',monospace}
-.leg-box{width:11px;height:11px;border-radius:3px;border:1.5px solid;flex-shrink:0}
-.leg-db{width:11px;height:14px;border-radius:3px;border:1.5px solid;flex-shrink:0;position:relative;overflow:hidden}
-.leg-db::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;border-bottom:1px solid}
+.leg-box{width:12px;height:12px;border-radius:3px;border:1.5px solid;flex-shrink:0}
+.leg-db{width:12px;height:15px;border-radius:3px;border:1.5px solid;flex-shrink:0;overflow:hidden;position:relative}
+.leg-db-cap{height:5px;border-bottom:1px solid}
 
-/* TABLE */
-.rel-table{width:100%;border-collapse:collapse}
-.rel-table th{background:var(--surface2);color:var(--dim);font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:1px;text-align:left;padding:8px 12px;border-bottom:1px solid var(--border)}
-.rel-table td{padding:8px 12px;border-bottom:1px solid var(--border);font-size:11.5px;color:#9aabcc;vertical-align:top}
-.rel-table tr:hover td{background:var(--surface2)}
-.tag{display:inline-block;padding:1px 6px;border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:8.5px;font-weight:600}
-.tag.nc{background:#1a3a1a;color:#4ade80;border:1px solid #2d7a2d}
-.tag.lc{background:#2a1a08;color:#fbbf24;border:1px solid #d97706}
-.tag.hw{background:#3a1a1a;color:#f87171;border:1px solid #ef4444}
-.tag.db{background:#12122a;color:#a5b4fc;border:1px solid #6366f1}
-
-.divider{height:1px;background:var(--border);margin:16px 0}
-
-/* DB connection line style */
-.db-arrow{font-family:'IBM Plex Mono',monospace;font-size:8px;color:#6366f1;white-space:nowrap;padding:0 6px}
+/* ── TABLE ── */
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{background:var(--surface2);color:var(--dim);font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:1px;text-align:left;padding:8px 12px;border-bottom:2px solid var(--border);font-weight:600}
+.tbl td{padding:9px 12px;border-bottom:1px solid var(--rule);color:var(--text);vertical-align:top}
+.tbl tr:hover td{background:var(--surface2)}
+.tag{display:inline-block;padding:1px 7px;border-radius:4px;font-family:'IBM Plex Mono',monospace;font-size:8.5px;font-weight:600;border:1px solid}
+.tag.nc{background:#dcfce7;color:#15803d;border-color:#86efac}
+.tag.lc{background:#fef9c3;color:#92400e;border-color:#fde047}
+.tag.hw{background:#fee2e2;color:#991b1b;border-color:#fca5a5}
+.tag.db{background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe}
+.tag.dbcrm{background:#fdf4ff;color:#7e22ce;border-color:#e9d5ff}
+.tag.dban{background:#fff7ed;color:#c2410c;border-color:#fed7aa}
 </style>
 </head>
 <body>
@@ -159,730 +209,668 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-ser
 <div class="nav">
   <div class="nav-brand">🔧 Car Garage · C4 Model</div>
   <div class="nav-tab active" onclick="tab(this,'c1')">C1 · System Context</div>
-  <div class="nav-tab" onclick="tab(this,'c2')">C2 · Container + Databases</div>
-  <div class="nav-tab" onclick="tab(this,'c3')">C3 · Component + Databases</div>
-  <div class="nav-tab" onclick="tab(this,'c4t')">Tool + DB Summary</div>
+  <div class="nav-tab" onclick="tab(this,'c2')">C2 · Container + Storage</div>
+  <div class="nav-tab" onclick="tab(this,'c3')">C3 · Component + DB Tables</div>
+  <div class="nav-tab" onclick="tab(this,'c4t')">Tool & DB Summary</div>
 </div>
 
-<!-- ══════════════════════════════════════════════
+<!-- ══════════════════════════════════════════
      C1 — SYSTEM CONTEXT
-══════════════════════════════════════════════ -->
+══════════════════════════════════════════ -->
 <div class="page active" id="c1">
   <div class="page-head">
     <div class="level-tag">Level 1 — System Context Diagram</div>
-    <h2>Who uses the system and what external services does it connect to?</h2>
-    <p>The big picture view. Shows people, the garage digital system as a whole, and external tools. No databases shown at this level — they appear in C2 and C3.</p>
+    <h2>Who uses the system and what does it connect to?</h2>
+    <p>The big picture. Shows the three types of users, the garage digital system as a whole, and every external service it depends on. Databases are not shown at this level — they appear in C2 and C3.</p>
   </div>
 
   <div class="callout">
-    <strong>C4 Model levels:</strong> C1 = big picture (who + what) · C2 = zoom into containers/apps + databases · C3 = zoom into components inside GaragePlug + databases · Each level adds one layer of detail.
+    <strong>How to read C4:</strong> Start here for the big picture → C2 zooms into containers and the 3-layer storage architecture → C3 zooms into GaragePlug components and their specific database tables.
+  </div>
+
+  <!-- 3-Layer Storage Banner -->
+  <div class="callout green" style="margin-bottom:20px">
+    <strong>3-Layer Storage Architecture (new):</strong> This system separates data into three layers — 
+    <strong>① Operational DB</strong> (GaragePlug Cloud DB — daily transactions) · 
+    <strong>② Customer DB</strong> (HubSpot CRM — single source of truth for customer & vehicle records) · 
+    <strong>③ Analytics DB</strong> (Google BigQuery — historical data for Looker Studio dashboards). 
+    Detail shown in C2 and C3.
   </div>
 
   <div class="diagram">
     <div class="sec-lbl">People (Users)</div>
-    <div class="c4-row" style="margin-bottom:20px">
+    <div class="c4-row" style="margin-bottom:22px">
       <div class="c4-box person">
         <span class="c4-icon">👤</span>
-        <div class="c4-type">Person</div>
+        <div class="c4-type" style="color:var(--person-t)">Person</div>
         <div class="c4-name">Customer</div>
         <div class="c4-desc">Books service, approves cost estimate, tracks job status, pays digitally, collects car</div>
       </div>
       <div class="c4-box person">
         <span class="c4-icon">🔧</span>
-        <div class="c4-type">Person</div>
+        <div class="c4-type" style="color:var(--person-t)">Person</div>
         <div class="c4-name">Mechanic</div>
-        <div class="c4-desc">Receives digital job card on tablet, inspects car, performs service, logs work, uploads photos</div>
+        <div class="c4-desc">Receives job card on tablet, inspects car, performs service, logs work, uploads photos</div>
       </div>
       <div class="c4-box person">
         <span class="c4-icon">👔</span>
-        <div class="c4-type">Person</div>
+        <div class="c4-type" style="color:var(--person-t)">Person</div>
         <div class="c4-name">Garage Manager</div>
-        <div class="c4-desc">Views live analytics dashboard, manages inventory levels, monitors revenue and performance</div>
+        <div class="c4-desc">Views analytics dashboard, manages inventory, monitors revenue and customer relationships</div>
       </div>
     </div>
 
     <div style="text-align:center;font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--dim);padding:4px 0">↓  uses / interacts with  ↓</div>
 
-    <!-- Main system boundary -->
-    <div class="boundary sys-boundary" style="margin-bottom:18px">
+    <!-- System boundary -->
+    <div class="boundary b-sys" style="margin-bottom:16px">
       <div class="boundary-label">Car Garage Digital System</div>
-      <div class="c4-row" style="justify-content:center">
-        <div class="c4-box system">
+      <div class="c4-row">
+        <div class="c4-box hub">
           <span class="c4-icon">🏪</span>
-          <div class="c4-type">Software System</div>
+          <div class="c4-type" style="color:var(--hub-t)">Software System · Core</div>
           <div class="c4-name">GaragePlug GMS</div>
-          <div class="c4-desc">Core garage management. Handles all jobs, inventory, customers, invoices, estimates, staff, and notifications</div>
-          <div class="c4-tech">No-Code SaaS · Free / $30 mo</div>
+          <div class="c4-desc">Core garage management. All jobs, inventory, invoices, estimates, staff, notifications</div>
+          <div class="c4-tech" style="color:var(--hub-t)">No-Code SaaS · Free / $30 mo</div>
         </div>
         <div class="c4-box system">
           <span class="c4-icon">📅</span>
-          <div class="c4-type">Software System</div>
+          <div class="c4-type" style="color:var(--system-t)">Software System</div>
           <div class="c4-name">SimplyBook.me</div>
-          <div class="c4-desc">Online booking portal. Customer-facing scheduling page with auto-confirmation emails and calendar sync</div>
-          <div class="c4-tech">No-Code SaaS · Free / $10 mo</div>
+          <div class="c4-desc">Online booking portal with auto-confirmation emails and calendar sync</div>
+          <div class="c4-tech" style="color:var(--system-t)">No-Code SaaS · Free / $10 mo</div>
         </div>
-        <div class="c4-box system">
+        <div class="c4-box system" style="background:#fdf4ff;border-color:#a855f7">
+          <span class="c4-icon">👥</span>
+          <div class="c4-type" style="color:#7e22ce">Software System · CRM</div>
+          <div class="c4-name">HubSpot CRM</div>
+          <div class="c4-desc">Customer master database. Single source of truth for all customer profiles, vehicles, and service history</div>
+          <div class="c4-tech" style="color:#7e22ce">No-Code SaaS · Free plan</div>
+        </div>
+        <div class="c4-box automate">
           <span class="c4-icon">⚡</span>
-          <div class="c4-type">Software System</div>
+          <div class="c4-type" style="color:var(--auto-t)">Software System · Automation</div>
           <div class="c4-name">Zapier</div>
-          <div class="c4-desc">Automation bridge. Listens for low-stock alerts from GaragePlug and triggers supplier purchase order emails via Gmail</div>
-          <div class="c4-tech">Low-Code SaaS · Free / $9 mo</div>
+          <div class="c4-desc">Automation bridge. Connects GaragePlug → HubSpot CRM → BigQuery → supplier email</div>
+          <div class="c4-tech" style="color:var(--auto-t)">Low-Code SaaS · Free / $9 mo</div>
         </div>
-        <div class="c4-box system">
+        <div class="c4-box system" style="background:#fff7ed;border-color:#f97316">
           <span class="c4-icon">📊</span>
-          <div class="c4-type">Software System</div>
-          <div class="c4-name">Google Looker Studio</div>
-          <div class="c4-desc">Business intelligence dashboard. Connects to GaragePlug CSV export via Google Sheets for revenue and KPI charts</div>
-          <div class="c4-tech">No-Code · Free (Google)</div>
+          <div class="c4-type" style="color:#c2410c">Software System · Analytics</div>
+          <div class="c4-name">BigQuery + Looker Studio</div>
+          <div class="c4-desc">Analytics data warehouse + BI dashboard. Stores historical data for revenue and KPI reporting</div>
+          <div class="c4-tech" style="color:#c2410c">No-Code · Google Cloud · Free tier</div>
         </div>
       </div>
     </div>
 
-    <!-- External systems -->
+    <!-- External boundary -->
     <div class="sec-lbl">External Systems (third-party, not owned by the garage)</div>
-    <div class="boundary ext-boundary">
+    <div class="boundary b-ext">
       <div class="boundary-label">External / Third-Party</div>
       <div class="c4-row">
         <div class="c4-box external">
           <span class="c4-icon">💬</span>
-          <div class="c4-type">External System</div>
+          <div class="c4-type" style="color:var(--ext-t)">External System</div>
           <div class="c4-name">WhatsApp Business</div>
-          <div class="c4-desc">Sends confirmations, estimate links, and pickup alerts to customers via SMS and WhatsApp</div>
-          <div class="c4-tech">No-Code · Free (Meta)</div>
+          <div class="c4-desc">Sends confirmations, estimate links, and pickup alerts to customers</div>
+          <div class="c4-tech" style="color:var(--ext-t)">No-Code · Free (Meta)</div>
         </div>
         <div class="c4-box external">
           <span class="c4-icon">💳</span>
-          <div class="c4-type">External System</div>
+          <div class="c4-type" style="color:var(--ext-t)">External System</div>
           <div class="c4-name">SumUp / PayPal</div>
-          <div class="c4-desc">Processes digital payment from customer at collection — tap-to-pay card reader or online payment link</div>
-          <div class="c4-tech">No-Code · 1.7–2.9% per transaction</div>
+          <div class="c4-desc">Processes digital payment from customer at car collection</div>
+          <div class="c4-tech" style="color:var(--ext-t)">No-Code · 1.7–2.9% per tx</div>
         </div>
         <div class="c4-box external">
           <span class="c4-icon">🔌</span>
-          <div class="c4-type">External · Hardware</div>
-          <div class="c4-name">OBD-II Scanner + Car Scanner App</div>
-          <div class="c4-desc">Reads vehicle fault codes via Bluetooth. Mechanic enters results into GaragePlug job card on tablet</div>
-          <div class="c4-tech">Hardware · EUR 30–80 one-time</div>
+          <div class="c4-type" style="color:var(--ext-t)">External · Hardware</div>
+          <div class="c4-name">OBD-II Scanner + App</div>
+          <div class="c4-desc">Reads vehicle fault codes via Bluetooth. Results entered into GaragePlug tablet</div>
+          <div class="c4-tech" style="color:var(--ext-t)">Hardware · EUR 30–80 one-time</div>
         </div>
         <div class="c4-box external">
           <span class="c4-icon">📦</span>
-          <div class="c4-type">External System</div>
+          <div class="c4-type" style="color:var(--ext-t)">External System</div>
           <div class="c4-name">Parts Supplier</div>
-          <div class="c4-desc">Receives auto-generated purchase order emails when GaragePlug stock falls below minimum threshold</div>
-          <div class="c4-tech">Receives email via Zapier + Gmail</div>
+          <div class="c4-desc">Receives auto-generated purchase orders by email when stock is low</div>
+          <div class="c4-tech" style="color:var(--ext-t)">Email via Zapier + Gmail</div>
         </div>
         <div class="c4-box external">
           <span class="c4-icon">🚗</span>
-          <div class="c4-type">External System</div>
-          <div class="c4-name">VIN Database</div>
-          <div class="c4-desc">Provides vehicle make, model, year, engine type, and history from a VIN number scan at intake</div>
-          <div class="c4-tech">Built into GaragePlug API</div>
+          <div class="c4-type" style="color:var(--ext-t)">External API</div>
+          <div class="c4-name">VIN Database API</div>
+          <div class="c4-desc">Returns vehicle make, model, year, engine from a VIN number</div>
+          <div class="c4-tech" style="color:var(--ext-t)">Built into GaragePlug</div>
         </div>
       </div>
     </div>
 
     <div class="legend">
       <div class="leg-item"><div class="leg-box" style="background:var(--person);border-color:var(--person-b)"></div>Person</div>
-      <div class="leg-item"><div class="leg-box" style="background:var(--system);border-color:var(--system-b)"></div>Software System (our tools)</div>
-      <div class="leg-item"><div class="leg-box" style="background:var(--ext);border-color:var(--ext-b)"></div>External System (third-party)</div>
-      <div class="leg-item" style="color:var(--dim);font-size:10px;font-family:'IBM Plex Mono',monospace">⚠ Databases not shown at C1 level — see C2 and C3</div>
+      <div class="leg-item"><div class="leg-box" style="background:var(--hub-bg);border-color:var(--hub-b)"></div>Core system hub</div>
+      <div class="leg-item"><div class="leg-box" style="background:var(--system);border-color:var(--system-b)"></div>Software system</div>
+      <div class="leg-item"><div class="leg-box" style="background:var(--auto);border-color:var(--auto-b)"></div>Automation system</div>
+      <div class="leg-item"><div class="leg-box" style="background:var(--ext);border-color:var(--ext-b)"></div>External system</div>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════
-     C2 — CONTAINER + DATABASES
-══════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════════
+     C2 — CONTAINER + 3-LAYER STORAGE
+══════════════════════════════════════════ -->
 <div class="page" id="c2">
   <div class="page-head">
-    <div class="level-tag">Level 2 — Container Diagram (with Databases)</div>
-    <h2>What are the main applications, databases, and how do they communicate?</h2>
-    <p>Zooms into the garage system. Each box is a separate deployable unit — a web app, mobile app, or database. Databases are shown as cylinder shapes. Arrows show how data flows.</p>
+    <div class="level-tag">Level 2 — Container Diagram with 3-Layer Storage</div>
+    <h2>Applications, databases, and how data flows between them</h2>
+    <p>Shows each deployable application and all three storage layers. Databases are drawn as cylinders. Arrows show direction of data flow.</p>
   </div>
 
-  <div class="callout">
-    <strong>Key insight:</strong> Because GaragePlug, SimplyBook.me, and Zapier are <strong>SaaS tools</strong>, their databases are <strong>cloud-hosted and managed by the vendor</strong> — the garage never sets them up or maintains them. They still exist and must be shown in C4 for completeness.
+  <!-- 3-Layer Storage Summary -->
+  <div style="margin-bottom:20px">
+    <div class="sec-lbl">3-Layer Storage Architecture</div>
+    <div class="storage-banner">
+      <div class="storage-layer sl-op">
+        <div class="sl-title">① Operational Layer</div>
+        <div class="sl-name">🗄️ GaragePlug Cloud DB</div>
+        <div class="sl-desc">Short-term daily transaction data. Job cards, parts usage, work logs, invoices. Managed by GaragePlug vendor.</div>
+      </div>
+      <div class="storage-layer sl-crm">
+        <div class="sl-title">② Customer Data Layer</div>
+        <div class="sl-name">🗄️ HubSpot CRM Database</div>
+        <div class="sl-desc">Long-term permanent customer records. Single source of truth for all customer profiles, vehicle history, and service records. Synced from GaragePlug via Zapier.</div>
+      </div>
+      <div class="storage-layer sl-an">
+        <div class="sl-title">③ Analytics Layer</div>
+        <div class="sl-name">🗄️ Google BigQuery</div>
+        <div class="sl-desc">Historical aggregated data for dashboards. Receives exports from GaragePlug and HubSpot via Zapier. Feeds Looker Studio for KPI reporting. Free tier.</div>
+      </div>
+    </div>
   </div>
 
   <div class="diagram">
-
     <!-- Users -->
-    <div class="c4-row" style="justify-content:center;margin-bottom:6px">
-      <div class="c4-box person" style="min-width:130px;max-width:155px">
-        <span class="c4-icon">👤</span><div class="c4-type">Person</div>
+    <div class="c4-row" style="margin-bottom:6px;justify-content:center">
+      <div class="c4-box person" style="min-width:130px;max-width:150px">
+        <span class="c4-icon">👤</span><div class="c4-type" style="color:var(--person-t)">Person</div>
         <div class="c4-name">Customer</div><div class="c4-desc">Books, approves, tracks, pays</div>
       </div>
-      <div class="c4-box person" style="min-width:130px;max-width:155px">
-        <span class="c4-icon">🔧</span><div class="c4-type">Person</div>
+      <div class="c4-box person" style="min-width:130px;max-width:150px">
+        <span class="c4-icon">🔧</span><div class="c4-type" style="color:var(--person-t)">Person</div>
         <div class="c4-name">Mechanic</div><div class="c4-desc">Works via tablet app</div>
       </div>
-      <div class="c4-box person" style="min-width:130px;max-width:155px">
-        <span class="c4-icon">👔</span><div class="c4-type">Person</div>
-        <div class="c4-name">Manager</div><div class="c4-desc">Views dashboard and reports</div>
+      <div class="c4-box person" style="min-width:130px;max-width:150px">
+        <span class="c4-icon">👔</span><div class="c4-type" style="color:var(--person-t)">Person</div>
+        <div class="c4-name">Manager</div><div class="c4-desc">Views CRM + analytics</div>
       </div>
     </div>
-    <div style="text-align:center;font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--dim);padding:4px 0 10px">↓  uses via browser / app / tablet  ↓</div>
+    <div style="text-align:center;font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--dim);padding:4px 0 12px">↓ uses via browser / app / tablet ↓</div>
 
-    <!-- MAIN BOUNDARY -->
-    <div class="boundary sys-boundary" style="margin-bottom:16px">
+    <!-- SYSTEM BOUNDARY -->
+    <div class="boundary b-sys" style="margin-bottom:16px">
       <div class="boundary-label">Car Garage System Boundary</div>
 
-      <!-- CUSTOMER-FACING ROW -->
+      <!-- ROW 1: Customer-facing apps -->
       <div class="sec-lbl">Customer-Facing Layer</div>
-      <div class="c4-row" style="align-items:center;margin-bottom:6px">
+      <div class="c4-row" style="align-items:center;flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;margin-bottom:6px">
 
-        <!-- Booking portal -->
-        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0">
           <div class="c4-box container">
             <span class="c4-icon">📅</span>
-            <div class="c4-type">Container · Web App</div>
+            <div class="c4-type" style="color:var(--cont-t)">Container · Web App</div>
             <div class="c4-name">Booking Portal</div>
-            <div class="c4-desc">Customer-facing scheduling page. Picks date, service, gets auto-confirmation</div>
-            <div class="c4-tech">SimplyBook.me · No-Code</div>
+            <div class="c4-desc">Customer books date and service. Auto-sends confirmation</div>
+            <div class="c4-tech" style="color:var(--cont-t)">SimplyBook.me · No-Code</div>
           </div>
-          <div class="arr-col"><div class="vline"></div><div class="vlbl" style="color:#6366f1">reads/writes ↕</div></div>
-          <div class="c4-db internal" style="min-width:150px">
+          <div class="arr-col"><div class="vline vline-op" style="height:18px"></div><div class="vlbl vlbl-op">reads/writes ↕</div></div>
+          <div class="c4-db db-op">
             <div class="db-cap">🗄️</div>
             <div class="db-body">
-              <div class="c4-type">Database · Cloud</div>
-              <div class="c4-name">SimplyBook.me DB</div>
-              <div class="c4-desc">Stores bookings, time slots, customer contacts, confirmations</div>
-              <div class="c4-tech">Managed by SimplyBook.me</div>
+              <div class="db-type">Operational DB</div>
+              <div class="db-name">SimplyBook.me DB</div>
+              <div class="db-desc">Bookings · time slots · confirmations</div>
+              <div class="db-tech">Vendor-managed cloud</div>
             </div>
           </div>
         </div>
 
-        <div class="arr-row" style="flex:1"><div class="arr-line"></div><div class="arr-lbl">booking data →</div><div class="arr-line"></div></div>
+        <div class="arr-row"><div class="arr-line"></div><div class="arr-lbl">booking data →</div><div class="arr-line"></div></div>
 
-        <!-- GaragePlug GMS — central hub -->
-        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+        <!-- GaragePlug HUB -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0">
           <div class="c4-box hub" style="min-width:175px">
             <span class="c4-icon">🏪</span>
-            <div class="c4-type">Container · Core Platform</div>
+            <div class="c4-type" style="color:var(--hub-t)">Container · Core Hub</div>
             <div class="c4-name">GaragePlug GMS</div>
-            <div class="c4-desc">Central hub. Manages all jobs, customers, vehicles, inventory, invoices, estimates, staff</div>
-            <div class="c4-tech">GaragePlug SaaS · No-Code</div>
+            <div class="c4-desc">Central platform. All jobs, inventory, estimates, invoices, mechanic assignment</div>
+            <div class="c4-tech" style="color:var(--hub-t)">GaragePlug SaaS · No-Code</div>
           </div>
-          <div class="arr-col"><div class="vline"></div><div class="vlbl" style="color:#6366f1">reads/writes ↕</div></div>
-          <div class="c4-db internal" style="min-width:175px">
+          <div class="arr-col"><div class="vline vline-op" style="height:18px"></div><div class="vlbl vlbl-op">reads/writes ↕</div></div>
+          <div class="c4-db db-op" style="min-width:175px">
             <div class="db-cap">🗄️</div>
             <div class="db-body">
-              <div class="c4-type">Database · Cloud (Primary)</div>
-              <div class="c4-name">GaragePlug Cloud DB</div>
-              <div class="c4-desc">Stores all jobs, customers, vehicles, parts inventory, estimates, invoices, work logs, photos, notifications history</div>
-              <div class="c4-tech" style="color:#a5b4fc">Managed by GaragePlug · PostgreSQL (cloud)</div>
+              <div class="db-type">① Operational DB (Primary)</div>
+              <div class="db-name">GaragePlug Cloud DB</div>
+              <div class="db-desc">jobs · inventory · work_logs · invoices · estimates · notifications</div>
+              <div class="db-tech">Vendor-managed · PostgreSQL cloud</div>
             </div>
           </div>
         </div>
 
-        <div class="arr-row" style="flex:1"><div class="arr-line"></div><div class="arr-lbl">← job status / alerts</div><div class="arr-line"></div></div>
+        <div class="arr-row"><div class="arr-line"></div><div class="arr-lbl">← status / alerts</div><div class="arr-line"></div></div>
 
-        <!-- Customer portal -->
-        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0">
           <div class="c4-box container">
             <span class="c4-icon">📱</span>
-            <div class="c4-type">Container · Web / Mobile App</div>
+            <div class="c4-type" style="color:var(--cont-t)">Container · Web / Mobile</div>
             <div class="c4-name">Customer Portal</div>
-            <div class="c4-desc">Live job tracking, estimate approval, invoice view, payment link</div>
-            <div class="c4-tech">GaragePlug Portal · No-Code</div>
+            <div class="c4-desc">Live job tracking, estimate approval, invoice view, payment</div>
+            <div class="c4-tech" style="color:var(--cont-t)">GaragePlug Portal · No-Code</div>
           </div>
-          <div class="arr-col"><div class="vline"></div><div class="vlbl" style="color:var(--dim)">reads from GaragePlug DB ↑</div></div>
+          <div class="arr-col"><div class="vline vline-op" style="height:18px"></div><div class="vlbl" style="color:var(--dim)">reads GaragePlug DB ↑</div></div>
         </div>
       </div>
 
       <div class="divider"></div>
 
-      <!-- INTERNAL TOOLS ROW -->
-      <div class="sec-lbl">Internal / Operations Layer</div>
-      <div class="c4-row" style="align-items:center;margin-bottom:6px">
+      <!-- ROW 2: Internal + CRM + Analytics -->
+      <div class="sec-lbl">Internal, CRM & Analytics Layer</div>
+      <div class="c4-row" style="align-items:center;flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px">
 
-        <!-- Mechanic tablet -->
-        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+        <!-- Mechanic Tablet -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0">
           <div class="c4-box container">
             <span class="c4-icon">📲</span>
-            <div class="c4-type">Container · Tablet App</div>
+            <div class="c4-type" style="color:var(--cont-t)">Container · Tablet App</div>
             <div class="c4-name">Mechanic Tablet App</div>
-            <div class="c4-desc">Receives job cards, logs work done, completes digital checklist, uploads photos</div>
-            <div class="c4-tech">GaragePlug App · No-Code</div>
+            <div class="c4-desc">Job cards, work logs, digital checklist, photo upload</div>
+            <div class="c4-tech" style="color:var(--cont-t)">GaragePlug App · No-Code</div>
           </div>
         </div>
 
-        <div class="arr-row" style="flex:1"><div class="arr-line"></div><div class="arr-lbl">reads/writes jobs ↔</div><div class="arr-line"></div></div>
+        <div class="arr-row"><div class="arr-line"></div><div class="arr-lbl">reads/writes jobs ↔</div><div class="arr-line"></div></div>
 
-        <!-- GaragePlug again (central) -->
-        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
-          <div class="c4-box hub" style="min-width:175px">
+        <!-- GaragePlug again -->
+        <div style="flex-shrink:0">
+          <div class="c4-box hub" style="min-width:155px">
             <span class="c4-icon">🏪</span>
-            <div class="c4-type">Container · Core Platform</div>
+            <div class="c4-type" style="color:var(--hub-t)">Container · Core Hub</div>
             <div class="c4-name">GaragePlug GMS</div>
-            <div class="c4-desc">(same central hub — all data stored in GaragePlug Cloud DB above)</div>
-            <div class="c4-tech">GaragePlug SaaS · No-Code</div>
+            <div class="c4-desc">Same hub — data in GaragePlug Cloud DB</div>
+            <div class="c4-tech" style="color:var(--hub-t)">No-Code</div>
           </div>
         </div>
 
-        <div class="arr-row" style="flex:1"><div class="arr-line"></div><div class="arr-lbl">low-stock webhook →</div><div class="arr-line"></div></div>
+        <div class="arr-row"><div class="arr-line"></div><div class="arr-lbl">Zapier syncs →</div><div class="arr-line"></div></div>
 
-        <!-- Zapier -->
-        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
-          <div class="c4-box container" style="border-color:#f59e0b;background:#1a1400">
-            <span class="c4-icon">⚡</span>
-            <div class="c4-type">Container · Automation</div>
-            <div class="c4-name">Zapier</div>
-            <div class="c4-desc">Listens for GaragePlug stock alerts. Triggers Gmail to send supplier purchase order</div>
-            <div class="c4-tech">Zapier SaaS · Low-Code</div>
+        <!-- HubSpot CRM -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0">
+          <div class="c4-box container" style="background:#fdf4ff;border-color:#a855f7">
+            <span class="c4-icon">👥</span>
+            <div class="c4-type" style="color:#7e22ce">Container · CRM</div>
+            <div class="c4-name">HubSpot CRM</div>
+            <div class="c4-desc">Customer master data. All profiles, vehicles, full service history, communication logs</div>
+            <div class="c4-tech" style="color:#7e22ce">HubSpot · No-Code · Free</div>
           </div>
-          <div class="arr-col"><div class="vline"></div><div class="vlbl" style="color:#f59e0b">reads/writes ↕</div></div>
-          <div class="c4-db" style="background:var(--dbext);border-color:#92400e;min-width:150px">
-            <div class="db-cap" style="background:#140f00;border-color:#92400e">🗄️</div>
-            <div class="db-body">
-              <div class="c4-type">Database · Cloud</div>
-              <div class="c4-name">Zapier Workflow DB</div>
-              <div class="c4-desc">Stores automation rules, trigger history, execution logs</div>
-              <div class="c4-tech">Managed by Zapier</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="arr-row" style="flex:1"><div class="arr-line"></div><div class="arr-lbl">→ CSV export</div><div class="arr-line"></div></div>
-
-        <!-- Analytics -->
-        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
-          <div class="c4-box container">
-            <span class="c4-icon">📊</span>
-            <div class="c4-type">Container · BI Dashboard</div>
-            <div class="c4-name">Looker Studio</div>
-            <div class="c4-desc">Revenue and KPI charts. Reads from Google Sheets which is fed by GaragePlug CSV export</div>
-            <div class="c4-tech">Google Looker Studio · Free</div>
-          </div>
-          <div class="arr-col"><div class="vline"></div><div class="vlbl" style="color:#6366f1">reads from ↑</div></div>
-          <div class="c4-db internal" style="min-width:150px">
+          <div class="arr-col"><div class="vline vline-crm" style="height:18px"></div><div class="vlbl vlbl-crm">reads/writes ↕</div></div>
+          <div class="c4-db db-crm">
             <div class="db-cap">🗄️</div>
             <div class="db-body">
-              <div class="c4-type">Database · Google Drive</div>
-              <div class="c4-name">Google Sheets</div>
-              <div class="c4-desc">Stores GaragePlug CSV exports. Acts as data source for Looker Studio dashboards</div>
-              <div class="c4-tech">Managed by manager · Google Drive</div>
+              <div class="db-type">② Customer DB (CRM)</div>
+              <div class="db-name">HubSpot CRM Database</div>
+              <div class="db-desc">customers · vehicles · service_history · contacts · deals · communications</div>
+              <div class="db-tech">HubSpot cloud · vendor-managed</div>
             </div>
           </div>
         </div>
-      </div>
 
-    </div><!-- end sys boundary -->
+        <div class="arr-row"><div class="arr-line"></div><div class="arr-lbl">Zapier exports →</div><div class="arr-line"></div></div>
+
+        <!-- BigQuery + Looker -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0">
+          <div class="c4-box container" style="background:#fff7ed;border-color:#f97316">
+            <span class="c4-icon">📊</span>
+            <div class="c4-type" style="color:#c2410c">Container · Analytics</div>
+            <div class="c4-name">BigQuery + Looker Studio</div>
+            <div class="c4-desc">Data warehouse + dashboard. Revenue KPIs, mechanic performance, demand forecasting</div>
+            <div class="c4-tech" style="color:#c2410c">Google Cloud · No-Code · Free tier</div>
+          </div>
+          <div class="arr-col"><div class="vline vline-an" style="height:18px"></div><div class="vlbl vlbl-an">reads/writes ↕</div></div>
+          <div class="c4-db db-an">
+            <div class="db-cap">🗄️</div>
+            <div class="db-body">
+              <div class="db-type">③ Analytics DB (Warehouse)</div>
+              <div class="db-name">Google BigQuery</div>
+              <div class="db-desc">Historical jobs · revenue_agg · customer_kpis · parts_trends · forecasts</div>
+              <div class="db-tech">Google Cloud · free 10GB/mo</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="arr-row"><div class="arr-line"></div><div class="arr-lbl">low-stock alert →</div><div class="arr-line"></div></div>
+
+        <!-- Zapier -->
+        <div style="flex-shrink:0">
+          <div class="c4-box automate">
+            <span class="c4-icon">⚡</span>
+            <div class="c4-type" style="color:var(--auto-t)">Container · Automation</div>
+            <div class="c4-name">Zapier</div>
+            <div class="c4-desc">Syncs GaragePlug → HubSpot CRM. Exports data → BigQuery. Sends supplier purchase orders</div>
+            <div class="c4-tech" style="color:var(--auto-t)">Low-Code · Free / $9 mo</div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- end system boundary -->
 
     <!-- EXTERNAL -->
-    <div class="sec-lbl">External Systems (called by GaragePlug + Zapier)</div>
-    <div class="boundary ext-boundary">
-      <div class="boundary-label">External</div>
+    <div class="sec-lbl">External Systems</div>
+    <div class="boundary b-ext">
+      <div class="boundary-label">External / Third-Party</div>
       <div class="c4-row">
-        <div class="c4-box external" style="min-width:140px;max-width:165px">
-          <span class="c4-icon">💬</span><div class="c4-type">External</div>
-          <div class="c4-name">WhatsApp Business</div>
-          <div class="c4-desc">Sends messages to customers at key process steps</div>
-        </div>
-        <div class="c4-box external" style="min-width:140px;max-width:165px">
-          <span class="c4-icon">💳</span><div class="c4-type">External</div>
-          <div class="c4-name">SumUp / PayPal</div>
-          <div class="c4-desc">Processes digital payment at pickup</div>
-        </div>
-        <div class="c4-box external" style="min-width:140px;max-width:165px">
-          <span class="c4-icon">🔌</span><div class="c4-type">External · Hardware</div>
-          <div class="c4-name">OBD-II Scanner</div>
-          <div class="c4-desc">Reads fault codes → mechanic enters into GaragePlug</div>
-        </div>
-        <div class="c4-box external" style="min-width:140px;max-width:165px">
-          <span class="c4-icon">📦</span><div class="c4-type">External</div>
-          <div class="c4-name">Parts Supplier</div>
-          <div class="c4-desc">Receives auto purchase order emails from Zapier</div>
-        </div>
-        <div class="c4-box external" style="min-width:140px;max-width:165px">
-          <span class="c4-icon">🚗</span><div class="c4-type">External API</div>
-          <div class="c4-name">VIN Database API</div>
-          <div class="c4-desc">Returns vehicle details from VIN number</div>
-        </div>
+        <div class="c4-box external" style="min-width:130px;max-width:158px"><span class="c4-icon">💬</span><div class="c4-type" style="color:var(--ext-t)">External</div><div class="c4-name">WhatsApp Business</div><div class="c4-desc">Customer message notifications at each process step</div></div>
+        <div class="c4-box external" style="min-width:130px;max-width:158px"><span class="c4-icon">💳</span><div class="c4-type" style="color:var(--ext-t)">External</div><div class="c4-name">SumUp / PayPal</div><div class="c4-desc">Processes digital payment at pickup</div></div>
+        <div class="c4-box external" style="min-width:130px;max-width:158px"><span class="c4-icon">🔌</span><div class="c4-type" style="color:var(--ext-t)">External · Hardware</div><div class="c4-name">OBD-II Scanner</div><div class="c4-desc">Reads car fault codes → mechanic enters into GaragePlug</div></div>
+        <div class="c4-box external" style="min-width:130px;max-width:158px"><span class="c4-icon">📦</span><div class="c4-type" style="color:var(--ext-t)">External</div><div class="c4-name">Parts Supplier</div><div class="c4-desc">Receives auto purchase order emails from Zapier</div></div>
+        <div class="c4-box external" style="min-width:130px;max-width:158px"><span class="c4-icon">🚗</span><div class="c4-type" style="color:var(--ext-t)">External API</div><div class="c4-name">VIN Database API</div><div class="c4-desc">Returns vehicle details from VIN number</div></div>
       </div>
     </div>
 
     <div class="legend">
       <div class="leg-item"><div class="leg-box" style="background:var(--person);border-color:var(--person-b)"></div>Person</div>
+      <div class="leg-item"><div class="leg-box" style="background:var(--hub-bg);border-color:var(--hub-b)"></div>Core hub</div>
       <div class="leg-item"><div class="leg-box" style="background:var(--cont);border-color:var(--cont-b)"></div>Container (app)</div>
-      <div class="leg-item"><div class="leg-box" style="background:#0a2a28;border-color:#00d4aa"></div>Core hub</div>
+      <div class="leg-item"><div class="leg-box" style="background:#fdf4ff;border-color:#a855f7"></div>CRM container</div>
+      <div class="leg-item"><div class="leg-box" style="background:var(--auto);border-color:var(--auto-b)"></div>Automation</div>
       <div class="leg-item">
-        <div class="leg-db" style="background:var(--db);border-color:var(--db-b)">
-          <div style="height:4px;background:#12122a;border-bottom:1px solid var(--db-b)"></div>
-        </div>
-        Database (cloud, vendor-managed)
+        <div class="leg-db" style="border-color:var(--db-op-b)"><div class="leg-db-cap" style="background:var(--db-op-cap);border-color:var(--db-op-b)"></div></div>
+        ① Operational DB
       </div>
       <div class="leg-item">
-        <div class="leg-db" style="background:var(--dbext);border-color:#92400e">
-          <div style="height:4px;background:#140f00;border-bottom:1px solid #92400e"></div>
-        </div>
-        Database (external vendor)
+        <div class="leg-db" style="border-color:var(--db-crm-b)"><div class="leg-db-cap" style="background:var(--db-crm-cap);border-color:var(--db-crm-b)"></div></div>
+        ② Customer / CRM DB
+      </div>
+      <div class="leg-item">
+        <div class="leg-db" style="border-color:var(--db-an-b)"><div class="leg-db-cap" style="background:var(--db-an-cap);border-color:var(--db-an-b)"></div></div>
+        ③ Analytics DB
       </div>
       <div class="leg-item"><div class="leg-box" style="background:var(--ext);border-color:var(--ext-b)"></div>External system</div>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════
-     C3 — COMPONENT + DATABASES
-══════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════════
+     C3 — COMPONENT + DB TABLES
+══════════════════════════════════════════ -->
 <div class="page" id="c3">
   <div class="page-head">
-    <div class="level-tag">Level 3 — Component Diagram (with Databases)</div>
-    <h2>What are the internal modules of GaragePlug and which database tables do they use?</h2>
-    <p>Zooms inside the GaragePlug container. Shows each functional component, which part of the database it reads/writes, and which BPMN step it powers.</p>
-  </div>
-
-  <div class="callout">
-    <strong>Note:</strong> GaragePlug uses a single cloud database with multiple logical tables. Each component reads and writes to specific tables — shown below as separate database symbols for clarity.
+    <div class="level-tag">Level 3 — Component Diagram with Database Tables</div>
+    <h2>Internal modules of GaragePlug and which database tables they use</h2>
+    <p>Zooms inside GaragePlug. Each module reads/writes to specific tables in the GaragePlug Cloud DB (①), syncs customer data to HubSpot CRM (②), or feeds analytics to BigQuery (③).</p>
   </div>
 
   <div class="diagram">
-
-    <!-- Row 1: Job processing components -->
-    <div class="boundary sys-boundary" style="margin-bottom:16px">
+    <div class="boundary b-sys" style="margin-bottom:16px">
       <div class="boundary-label">GaragePlug GMS — Components & Database Tables</div>
 
-      <div class="sec-lbl">Job Processing Components</div>
-      <div class="c4-row" style="align-items:flex-start;margin-bottom:8px">
-
-        <div style="display:flex;flex-direction:column;align-items:center;gap:5px">
+      <!-- JOB PROCESSING -->
+      <div class="sec-lbl">Job Processing Components → ① GaragePlug Cloud DB</div>
+      <div class="c4-row" style="margin-bottom:8px">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
           <div class="c4-box component">
-            <span class="c4-icon">🔲</span>
-            <div class="c4-type">Component</div>
+            <span class="c4-icon">🔲</span><div class="c4-type" style="color:var(--comp-t)">Component</div>
             <div class="c4-name">QR Check-in Module</div>
-            <div class="c4-desc">Generates unique QR per booking. Scanned at drop-off — logs arrival time and triggers job card creation</div>
-            <div class="c4-tech">BPMN: Drop Off Car</div>
+            <div class="c4-desc">Generates QR per booking. Scanned at drop-off — logs arrival, triggers job card</div>
+            <div class="c4-tech" style="color:var(--comp-t)">BPMN: Drop Off Car</div>
           </div>
-          <div class="arr-col"><div class="vline" style="background:#6366f1"></div><div class="vlbl" style="color:#a5b4fc">writes check-in record ↓</div></div>
-          <div class="c4-db internal">
-            <div class="db-cap">🗄️</div>
-            <div class="db-body">
-              <div class="c4-type">DB Table</div>
-              <div class="c4-name">checkins</div>
-              <div class="c4-desc">vehicle_id · timestamp · qr_code · job_id (FK)</div>
-              <div class="c4-tech" style="color:#a5b4fc">GaragePlug Cloud DB</div>
-            </div>
-          </div>
+          <div class="arr-col"><div class="vline vline-op" style="height:14px"></div><div class="vlbl vlbl-op">writes ↓</div></div>
+          <div class="c4-db db-op"><div class="db-cap">🗄️</div><div class="db-body"><div class="db-type">① Table</div><div class="db-name">checkins</div><div class="db-desc">vehicle_id · timestamp · qr_code · job_id</div><div class="db-tech">GaragePlug Cloud DB</div></div></div>
         </div>
-
-        <div style="display:flex;flex-direction:column;align-items:center;gap:5px">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
           <div class="c4-box component">
-            <span class="c4-icon">🗃️</span>
-            <div class="c4-type">Component</div>
+            <span class="c4-icon">🗃️</span><div class="c4-type" style="color:var(--comp-t)">Component</div>
             <div class="c4-name">Job Card Engine</div>
-            <div class="c4-desc">Creates and manages digital job records. Links customer, vehicle, parts list, mechanic, and status. Calls VIN API on intake</div>
-            <div class="c4-tech">BPMN: Create Job Card</div>
+            <div class="c4-desc">Creates digital job records. VIN API auto-fills vehicle data. Links customer, parts, mechanic</div>
+            <div class="c4-tech" style="color:var(--comp-t)">BPMN: Create Job Card</div>
           </div>
-          <div class="arr-col"><div class="vline" style="background:#6366f1"></div><div class="vlbl" style="color:#a5b4fc">reads/writes ↕</div></div>
-          <div class="c4-db internal">
-            <div class="db-cap">🗄️</div>
-            <div class="db-body">
-              <div class="c4-type">DB Table</div>
-              <div class="c4-name">jobs</div>
-              <div class="c4-desc">job_id · customer_id · vehicle_id · mechanic_id · status · service_type · created_at</div>
-              <div class="c4-tech" style="color:#a5b4fc">GaragePlug Cloud DB</div>
-            </div>
-          </div>
+          <div class="arr-col"><div class="vline vline-op" style="height:14px"></div><div class="vlbl vlbl-op">reads/writes ↕</div></div>
+          <div class="c4-db db-op"><div class="db-cap">🗄️</div><div class="db-body"><div class="db-type">① Table</div><div class="db-name">jobs</div><div class="db-desc">job_id · customer_id · vehicle_id · mechanic_id · status · service_type</div><div class="db-tech">GaragePlug Cloud DB</div></div></div>
         </div>
-
-        <div style="display:flex;flex-direction:column;align-items:center;gap:5px">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
           <div class="c4-box component">
-            <span class="c4-icon">📦</span>
-            <div class="c4-type">Component</div>
+            <span class="c4-icon">📦</span><div class="c4-type" style="color:var(--comp-t)">Component</div>
             <div class="c4-name">Inventory Manager</div>
-            <div class="c4-desc">Tracks real-time parts stock. Checks availability per job. Sends low-stock webhook to Zapier. Auto-deducts parts when used</div>
-            <div class="c4-tech">BPMN: Auto Parts Check</div>
+            <div class="c4-desc">Real-time parts stock. Checks availability per job. Sends low-stock webhook to Zapier. Auto-deducts when used</div>
+            <div class="c4-tech" style="color:var(--comp-t)">BPMN: Auto Parts Check</div>
           </div>
-          <div class="arr-col"><div class="vline" style="background:#6366f1"></div><div class="vlbl" style="color:#a5b4fc">reads/writes ↕</div></div>
-          <div class="c4-db internal">
-            <div class="db-cap">🗄️</div>
-            <div class="db-body">
-              <div class="c4-type">DB Table</div>
-              <div class="c4-name">inventory</div>
-              <div class="c4-desc">part_id · part_name · qty_in_stock · min_threshold · supplier_id · unit_cost</div>
-              <div class="c4-tech" style="color:#a5b4fc">GaragePlug Cloud DB</div>
-            </div>
-          </div>
+          <div class="arr-col"><div class="vline vline-op" style="height:14px"></div><div class="vlbl vlbl-op">reads/writes ↕</div></div>
+          <div class="c4-db db-op"><div class="db-cap">🗄️</div><div class="db-body"><div class="db-type">① Table</div><div class="db-name">inventory</div><div class="db-desc">part_id · name · qty · min_threshold · supplier_id · unit_cost</div><div class="db-tech">GaragePlug Cloud DB</div></div></div>
         </div>
-
-        <div style="display:flex;flex-direction:column;align-items:center;gap:5px">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
           <div class="c4-box component">
-            <span class="c4-icon">💰</span>
-            <div class="c4-type">Component</div>
+            <span class="c4-icon">💰</span><div class="c4-type" style="color:var(--comp-t)">Component</div>
             <div class="c4-name">Estimate Generator</div>
-            <div class="c4-desc">Calculates cost from parts + labour rate × time. Generates itemised PDF. Sends shareable approval link to customer via SMS</div>
-            <div class="c4-tech">BPMN: Generate Estimate</div>
+            <div class="c4-desc">Calculates cost from parts + labour. Generates PDF estimate. Sends approval link to customer via SMS</div>
+            <div class="c4-tech" style="color:var(--comp-t)">BPMN: Generate Estimate</div>
           </div>
-          <div class="arr-col"><div class="vline" style="background:#6366f1"></div><div class="vlbl" style="color:#a5b4fc">reads/writes ↕</div></div>
-          <div class="c4-db internal">
-            <div class="db-cap">🗄️</div>
-            <div class="db-body">
-              <div class="c4-type">DB Table</div>
-              <div class="c4-name">estimates</div>
-              <div class="c4-desc">estimate_id · job_id · total_cost · parts_breakdown · status · approved_at · approved_by</div>
-              <div class="c4-tech" style="color:#a5b4fc">GaragePlug Cloud DB</div>
-            </div>
-          </div>
+          <div class="arr-col"><div class="vline vline-op" style="height:14px"></div><div class="vlbl vlbl-op">reads/writes ↕</div></div>
+          <div class="c4-db db-op"><div class="db-cap">🗄️</div><div class="db-body"><div class="db-type">① Table</div><div class="db-name">estimates</div><div class="db-desc">estimate_id · job_id · total · breakdown · status · approved_at</div><div class="db-tech">GaragePlug Cloud DB</div></div></div>
         </div>
-
       </div>
 
       <div class="divider"></div>
 
-      <!-- Row 2: Mechanic & invoice components -->
-      <div class="sec-lbl">Mechanic & Invoicing Components</div>
-      <div class="c4-row" style="align-items:flex-start;margin-bottom:8px">
-
-        <div style="display:flex;flex-direction:column;align-items:center;gap:5px">
+      <!-- MECHANIC & INVOICE -->
+      <div class="sec-lbl">Mechanic & Invoicing Components → ① GaragePlug Cloud DB</div>
+      <div class="c4-row" style="margin-bottom:8px">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
           <div class="c4-box component">
-            <span class="c4-icon">📲</span>
-            <div class="c4-type">Component</div>
+            <span class="c4-icon">📲</span><div class="c4-type" style="color:var(--comp-t)">Component</div>
             <div class="c4-name">Mechanic Tablet App</div>
-            <div class="c4-desc">Mobile interface. Displays assigned jobs, parts list, digital checklist. Captures photos. Marks job complete to trigger invoice</div>
-            <div class="c4-tech">BPMN: Log Work · Photo Upload</div>
+            <div class="c4-desc">Displays assigned jobs, parts list, digital checklist. Photos. Marks complete to trigger invoice</div>
+            <div class="c4-tech" style="color:var(--comp-t)">BPMN: Log Work · Photos</div>
           </div>
-          <div class="arr-col"><div class="vline" style="background:#6366f1"></div><div class="vlbl" style="color:#a5b4fc">writes work logs ↓</div></div>
-          <div class="c4-db internal">
-            <div class="db-cap">🗄️</div>
-            <div class="db-body">
-              <div class="c4-type">DB Table</div>
-              <div class="c4-name">work_logs</div>
-              <div class="c4-desc">log_id · job_id · mechanic_id · work_done · parts_used · time_taken · photos_urls · completed_at</div>
-              <div class="c4-tech" style="color:#a5b4fc">GaragePlug Cloud DB</div>
-            </div>
-          </div>
+          <div class="arr-col"><div class="vline vline-op" style="height:14px"></div><div class="vlbl vlbl-op">writes logs ↓</div></div>
+          <div class="c4-db db-op"><div class="db-cap">🗄️</div><div class="db-body"><div class="db-type">① Table</div><div class="db-name">work_logs</div><div class="db-desc">log_id · job_id · mechanic_id · work_done · parts_used · photos_urls · completed_at</div><div class="db-tech">GaragePlug Cloud DB</div></div></div>
         </div>
-
-        <div style="display:flex;flex-direction:column;align-items:center;gap:5px">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
           <div class="c4-box component">
-            <span class="c4-icon">📄</span>
-            <div class="c4-type">Component</div>
+            <span class="c4-icon">📄</span><div class="c4-type" style="color:var(--comp-t)">Component</div>
             <div class="c4-name">Invoice Engine</div>
-            <div class="c4-desc">Auto-generates PDF invoice when job marked complete. Applies approved estimate or calculates from job record. Pushes notification to customer</div>
-            <div class="c4-tech">BPMN: Generate E-Invoice</div>
+            <div class="c4-desc">Auto-generates PDF invoice when job marked complete. Pushes notification to customer</div>
+            <div class="c4-tech" style="color:var(--comp-t)">BPMN: Generate E-Invoice</div>
           </div>
-          <div class="arr-col"><div class="vline" style="background:#6366f1"></div><div class="vlbl" style="color:#a5b4fc">reads/writes ↕</div></div>
-          <div class="c4-db internal">
-            <div class="db-cap">🗄️</div>
-            <div class="db-body">
-              <div class="c4-type">DB Table</div>
-              <div class="c4-name">invoices</div>
-              <div class="c4-desc">invoice_id · job_id · customer_id · total · parts_line_items · labour_cost · paid_at · pdf_url</div>
-              <div class="c4-tech" style="color:#a5b4fc">GaragePlug Cloud DB</div>
-            </div>
-          </div>
+          <div class="arr-col"><div class="vline vline-op" style="height:14px"></div><div class="vlbl vlbl-op">reads/writes ↕</div></div>
+          <div class="c4-db db-op"><div class="db-cap">🗄️</div><div class="db-body"><div class="db-type">① Table</div><div class="db-name">invoices</div><div class="db-desc">invoice_id · job_id · total · line_items · labour · paid_at · pdf_url</div><div class="db-tech">GaragePlug Cloud DB</div></div></div>
         </div>
-
-        <div style="display:flex;flex-direction:column;align-items:center;gap:5px">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
           <div class="c4-box component">
-            <span class="c4-icon">🔔</span>
-            <div class="c4-type">Component</div>
+            <span class="c4-icon">✅</span><div class="c4-type" style="color:var(--comp-t)">Component</div>
+            <div class="c4-name">Approval Tracker</div>
+            <div class="c4-desc">Records customer approval/rejection of estimates with timestamp. Digital audit trail</div>
+            <div class="c4-tech" style="color:var(--comp-t)">BPMN: Approve Estimate</div>
+          </div>
+          <div class="arr-col"><div class="vline vline-op" style="height:14px"></div><div class="vlbl vlbl-op">reads/writes ↕</div></div>
+          <div class="c4-db db-op"><div class="db-cap">🗄️</div><div class="db-body"><div class="db-type">① Table</div><div class="db-name">approvals</div><div class="db-desc">approval_id · estimate_id · decision · responded_at · channel</div><div class="db-tech">GaragePlug Cloud DB</div></div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+          <div class="c4-box component">
+            <span class="c4-icon">🔔</span><div class="c4-type" style="color:var(--comp-t)">Component</div>
             <div class="c4-name">Notification Service</div>
-            <div class="c4-desc">Sends automated SMS and WhatsApp messages at key events: booking confirmed, car received, estimate ready, car ready, invoice sent</div>
-            <div class="c4-tech">BPMN: All notification steps</div>
+            <div class="c4-desc">Sends automated SMS/WhatsApp at key events. Booking confirmed, estimate ready, car ready</div>
+            <div class="c4-tech" style="color:var(--comp-t)">BPMN: All notification steps</div>
           </div>
-          <div class="arr-col"><div class="vline" style="background:#6366f1"></div><div class="vlbl" style="color:#a5b4fc">logs messages ↓</div></div>
-          <div class="c4-db internal">
-            <div class="db-cap">🗄️</div>
-            <div class="db-body">
-              <div class="c4-type">DB Table</div>
-              <div class="c4-name">notifications</div>
-              <div class="c4-desc">notif_id · job_id · customer_id · channel · message · sent_at · status</div>
-              <div class="c4-tech" style="color:#a5b4fc">GaragePlug Cloud DB</div>
-            </div>
-          </div>
+          <div class="arr-col"><div class="vline vline-op" style="height:14px"></div><div class="vlbl vlbl-op">logs ↓</div></div>
+          <div class="c4-db db-op"><div class="db-cap">🗄️</div><div class="db-body"><div class="db-type">① Table</div><div class="db-name">notifications</div><div class="db-desc">notif_id · job_id · channel · message · sent_at · status</div><div class="db-tech">GaragePlug Cloud DB</div></div></div>
         </div>
-
-        <div style="display:flex;flex-direction:column;align-items:center;gap:5px">
-          <div class="c4-box component">
-            <span class="c4-icon">📊</span>
-            <div class="c4-type">Component</div>
-            <div class="c4-name">Reporting Module</div>
-            <div class="c4-desc">Built-in dashboard for revenue, job count, mechanic utilisation. Exports all job data as CSV for Google Sheets → Looker Studio</div>
-            <div class="c4-tech">BPMN: Update Analytics</div>
-          </div>
-          <div class="arr-col"><div class="vline" style="background:#6366f1"></div><div class="vlbl" style="color:#a5b4fc">reads all tables ↑</div></div>
-          <div class="c4-db internal">
-            <div class="db-cap">🗄️</div>
-            <div class="db-body">
-              <div class="c4-type">DB View (read-only)</div>
-              <div class="c4-name">analytics_view</div>
-              <div class="c4-desc">Aggregated view across jobs, invoices, inventory, and notifications. Exported as CSV</div>
-              <div class="c4-tech" style="color:#a5b4fc">GaragePlug Cloud DB</div>
-            </div>
-          </div>
-        </div>
-
       </div>
 
       <div class="divider"></div>
 
-      <!-- Row 3: Master data components -->
-      <div class="sec-lbl">Master Data Components</div>
-      <div class="c4-row" style="align-items:flex-start">
+      <!-- MASTER DATA & SYNC -->
+      <div class="sec-lbl">Master Data Components → syncs to ② HubSpot CRM and ③ BigQuery</div>
+      <div class="c4-row">
 
-        <div style="display:flex;flex-direction:column;align-items:center;gap:5px">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
           <div class="c4-box component">
-            <span class="c4-icon">👥</span>
-            <div class="c4-type">Component</div>
-            <div class="c4-name">Customer Database</div>
-            <div class="c4-desc">Stores customer profiles, contact details, vehicle history, past service records, and communication logs</div>
-            <div class="c4-tech">Supports: All customer steps</div>
+            <span class="c4-icon">👥</span><div class="c4-type" style="color:var(--comp-t)">Component</div>
+            <div class="c4-name">Customer Module</div>
+            <div class="c4-desc">Stores customer profiles in GaragePlug. Syncs to HubSpot CRM via Zapier as the permanent master record</div>
+            <div class="c4-tech" style="color:var(--comp-t)">Syncs to HubSpot CRM ②</div>
           </div>
-          <div class="arr-col"><div class="vline" style="background:#6366f1"></div><div class="vlbl" style="color:#a5b4fc">reads/writes ↕</div></div>
-          <div class="c4-db internal">
-            <div class="db-cap">🗄️</div>
-            <div class="db-body">
-              <div class="c4-type">DB Table</div>
-              <div class="c4-name">customers</div>
-              <div class="c4-desc">customer_id · name · phone · email · preferred_channel · created_at · total_jobs</div>
-              <div class="c4-tech" style="color:#a5b4fc">GaragePlug Cloud DB</div>
+          <div class="arr-col"><div class="vline vline-op" style="height:14px"></div><div class="vlbl vlbl-op">local store ↓</div></div>
+          <div class="c4-db db-op"><div class="db-cap">🗄️</div><div class="db-body"><div class="db-type">① Table (temporary)</div><div class="db-name">customers (GaragePlug)</div><div class="db-desc">customer_id · name · phone · email · vehicle_ids</div><div class="db-tech">Synced → HubSpot CRM</div></div></div>
+        </div>
+
+        <!-- Arrow to HubSpot -->
+        <div style="display:flex;align-items:center;padding-top:30px;flex-direction:column;gap:4px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#a855f7">Zapier syncs →</div>
+          <div style="height:1.5px;width:40px;background:#a855f7"></div>
+        </div>
+
+        <!-- HubSpot CRM DB -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+          <div class="boundary b-crm" style="padding:12px;margin-bottom:0">
+            <div class="boundary-label">② HubSpot CRM</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div class="c4-db db-crm" style="min-width:160px">
+                <div class="db-cap">🗄️</div>
+                <div class="db-body">
+                  <div class="db-type">② Customer DB</div>
+                  <div class="db-name">customers (HubSpot)</div>
+                  <div class="db-desc">contact_id · name · email · phone · lifecycle_stage · total_revenue</div>
+                  <div class="db-tech">HubSpot cloud · permanent</div>
+                </div>
+              </div>
+              <div class="c4-db db-crm" style="min-width:160px">
+                <div class="db-cap">🗄️</div>
+                <div class="db-body">
+                  <div class="db-type">② Customer DB</div>
+                  <div class="db-name">vehicles (HubSpot)</div>
+                  <div class="db-desc">vehicle_id · vin · make · model · year · service_history[] · customer_id</div>
+                  <div class="db-tech">HubSpot cloud · permanent</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        <div style="display:flex;flex-direction:column;align-items:center;gap:5px">
-          <div class="c4-box component">
-            <span class="c4-icon">🚗</span>
-            <div class="c4-type">Component</div>
-            <div class="c4-name">Vehicle Registry</div>
-            <div class="c4-desc">Stores vehicle records linked by VIN. Calls VIN API on first registration to auto-fill make, model, year, engine type</div>
-            <div class="c4-tech">BPMN: Create Job Card (VIN)</div>
-          </div>
-          <div class="arr-col"><div class="vline" style="background:#6366f1"></div><div class="vlbl" style="color:#a5b4fc">reads/writes ↕</div></div>
-          <div class="c4-db internal">
-            <div class="db-cap">🗄️</div>
-            <div class="db-body">
-              <div class="c4-type">DB Table</div>
-              <div class="c4-name">vehicles</div>
-              <div class="c4-desc">vehicle_id · vin · make · model · year · engine · customer_id · service_history[]</div>
-              <div class="c4-tech" style="color:#a5b4fc">GaragePlug Cloud DB</div>
+        <!-- Arrow to BigQuery -->
+        <div style="display:flex;align-items:center;padding-top:30px;flex-direction:column;gap:4px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#f97316">Zapier exports →</div>
+          <div style="height:1.5px;width:40px;background:#f97316"></div>
+        </div>
+
+        <!-- BigQuery DB -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+          <div class="boundary b-storage" style="padding:12px;margin-bottom:0">
+            <div class="boundary-label">③ Google BigQuery</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div class="c4-db db-an" style="min-width:160px">
+                <div class="db-cap">🗄️</div>
+                <div class="db-body">
+                  <div class="db-type">③ Analytics DB</div>
+                  <div class="db-name">revenue_facts</div>
+                  <div class="db-desc">date · revenue · job_count · avg_ticket · mechanic_id · service_type</div>
+                  <div class="db-tech">BigQuery · Looker Studio source</div>
+                </div>
+              </div>
+              <div class="c4-db db-an" style="min-width:160px">
+                <div class="db-cap">🗄️</div>
+                <div class="db-body">
+                  <div class="db-type">③ Analytics DB</div>
+                  <div class="db-name">parts_trends</div>
+                  <div class="db-desc">part_id · usage_count · stockout_events · reorder_frequency · cost_trend</div>
+                  <div class="db-tech">BigQuery · Looker Studio source</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        <div style="display:flex;flex-direction:column;align-items:center;gap:5px">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
           <div class="c4-box component">
-            <span class="c4-icon">✅</span>
-            <div class="c4-type">Component</div>
-            <div class="c4-name">Approval Tracker</div>
-            <div class="c4-desc">Records customer approval or rejection of cost estimates with timestamp. Creates digital audit trail linked to the job</div>
-            <div class="c4-tech">BPMN: Approve Cost Estimate</div>
+            <span class="c4-icon">📊</span><div class="c4-type" style="color:var(--comp-t)">Component</div>
+            <div class="c4-name">Reporting Module</div>
+            <div class="c4-desc">Built-in GaragePlug dashboard for daily ops. Exports data via Zapier to BigQuery for Looker Studio</div>
+            <div class="c4-tech" style="color:var(--comp-t)">BPMN: Update Analytics ③</div>
           </div>
-          <div class="arr-col"><div class="vline" style="background:#6366f1"></div><div class="vlbl" style="color:#a5b4fc">reads/writes ↕</div></div>
-          <div class="c4-db internal">
-            <div class="db-cap">🗄️</div>
-            <div class="db-body">
-              <div class="c4-type">DB Table</div>
-              <div class="c4-name">approvals</div>
-              <div class="c4-desc">approval_id · estimate_id · job_id · decision · responded_at · channel · ip_or_device</div>
-              <div class="c4-tech" style="color:#a5b4fc">GaragePlug Cloud DB</div>
-            </div>
-          </div>
-        </div>
-
-        <div style="display:flex;flex-direction:column;align-items:center;gap:5px">
-          <div class="c4-box component">
-            <span class="c4-icon">🔗</span>
-            <div class="c4-type">Component</div>
-            <div class="c4-name">Integration API</div>
-            <div class="c4-desc">Connects GaragePlug to external tools: Zapier webhook for stock alerts, SimplyBook.me sync, SumUp/PayPal payment confirmation, Looker Studio CSV export</div>
-            <div class="c4-tech">Supports: All cross-system flows</div>
-          </div>
-          <div class="arr-col"><div class="vline" style="background:#6366f1"></div><div class="vlbl" style="color:#a5b4fc">logs events ↓</div></div>
-          <div class="c4-db internal">
-            <div class="db-cap">🗄️</div>
-            <div class="db-body">
-              <div class="c4-type">DB Table</div>
-              <div class="c4-name">integration_logs</div>
-              <div class="c4-desc">event_id · source · event_type · payload · status · created_at</div>
-              <div class="c4-tech" style="color:#a5b4fc">GaragePlug Cloud DB</div>
-            </div>
-          </div>
+          <div class="arr-col"><div class="vline vline-an" style="height:14px"></div><div class="vlbl vlbl-an">exports to BigQuery ③</div></div>
         </div>
 
       </div>
-    </div><!-- end sys boundary -->
+    </div>
 
     <div class="legend">
-      <div class="leg-item"><div class="leg-box" style="background:var(--comp);border-color:var(--comp-b)"></div>Component (module inside GaragePlug)</div>
-      <div class="leg-item">
-        <div class="leg-db" style="background:var(--db);border-color:var(--db-b)">
-          <div style="height:4px;background:#12122a;border-bottom:1px solid var(--db-b)"></div>
-        </div>
-        Database table (GaragePlug Cloud DB — vendor-managed)
-      </div>
-      <div class="leg-item" style="font-size:10px;color:var(--dim);font-family:'IBM Plex Mono',monospace">All tables are inside one physical cloud database managed by GaragePlug. Shown separately for clarity.</div>
+      <div class="leg-item"><div class="leg-box" style="background:var(--comp);border-color:var(--comp-b)"></div>GaragePlug component</div>
+      <div class="leg-item"><div class="leg-db" style="border-color:var(--db-op-b)"><div class="leg-db-cap" style="background:var(--db-op-cap);border-color:var(--db-op-b)"></div></div>① Operational DB (GaragePlug)</div>
+      <div class="leg-item"><div class="leg-db" style="border-color:var(--db-crm-b)"><div class="leg-db-cap" style="background:var(--db-crm-cap);border-color:var(--db-crm-b)"></div></div>② Customer DB (HubSpot CRM)</div>
+      <div class="leg-item"><div class="leg-db" style="border-color:var(--db-an-b)"><div class="leg-db-cap" style="background:var(--db-an-cap);border-color:var(--db-an-b)"></div></div>③ Analytics DB (BigQuery)</div>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════
-     TOOL + DB SUMMARY
-══════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════════
+     TOOL & DB SUMMARY
+══════════════════════════════════════════ -->
 <div class="page" id="c4t">
   <div class="page-head">
     <div class="level-tag">Tool & Database Reference</div>
-    <h2>Complete Technology + Database Stack</h2>
-    <p>Every tool, every database, mapped to C4 level, BPMN steps, who manages the data, and cost.</p>
+    <h2>Complete Technology + 3-Layer Storage Stack</h2>
+    <p>Every application and database mapped to its C4 level, storage layer, purpose, and cost.</p>
   </div>
-
   <div class="diagram">
 
-    <div style="margin-bottom:16px;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--acc2)">Applications & Tools</div>
-    <table class="rel-table" style="margin-bottom:28px">
-      <thead>
-        <tr><th>Tool</th><th>C4 Level</th><th>BPMN Steps</th><th>User</th><th>Type</th><th>Cost</th></tr>
-      </thead>
+    <div style="margin-bottom:14px;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);font-weight:600">Applications & Tools</div>
+    <table class="tbl" style="margin-bottom:28px">
+      <thead><tr><th>Tool</th><th>C4 Level</th><th>BPMN Steps</th><th>User</th><th>Type</th><th>Cost</th></tr></thead>
       <tbody>
-        <tr><td><strong style="color:var(--text)">🏪 GaragePlug</strong><br><span style="font-size:10px;color:var(--dim)">garageplug.com</span></td><td>Container + Components</td><td>QR check-in, Job card, Parts check, Estimate, Tablet, Invoice, Notifications, Reports</td><td>All users</td><td><span class="tag nc">No-Code</span></td><td>Free / $30 mo</td></tr>
-        <tr><td><strong style="color:var(--text)">📅 SimplyBook.me</strong><br><span style="font-size:10px;color:var(--dim)">simplybook.me</span></td><td>Container · Web App</td><td>Submit Booking · Receive Confirmation</td><td>Customer</td><td><span class="tag nc">No-Code</span></td><td>Free / $10 mo</td></tr>
-        <tr><td><strong style="color:var(--text)">💬 WhatsApp Business</strong><br><span style="font-size:10px;color:var(--dim)">business.whatsapp.com</span></td><td>External System</td><td>Confirmation · Estimate approval · Pickup alert</td><td>Customer</td><td><span class="tag nc">No-Code</span></td><td>Free</td></tr>
-        <tr><td><strong style="color:var(--text)">⚡ Zapier / Make</strong><br><span style="font-size:10px;color:var(--dim)">zapier.com</span></td><td>Container · Automation</td><td>Auto-Order Parts from Supplier</td><td>System (auto)</td><td><span class="tag lc">Low-Code</span></td><td>Free / $9 mo</td></tr>
-        <tr><td><strong style="color:var(--text)">💳 SumUp / PayPal</strong><br><span style="font-size:10px;color:var(--dim)">sumup.com</span></td><td>External System</td><td>Collect Car & Pay</td><td>Customer</td><td><span class="tag nc">No-Code</span></td><td>1.7–2.9% per tx</td></tr>
-        <tr><td><strong style="color:var(--text)">🔌 OBD-II + Car Scanner App</strong><br><span style="font-size:10px;color:var(--dim)">OBDLink MX+ · Car Scanner app</span></td><td>External · Hardware</td><td>Inspect Car (OBD-II)</td><td>Mechanic</td><td><span class="tag hw">Hardware</span></td><td>EUR 30–80 one-time</td></tr>
-        <tr><td><strong style="color:var(--text)">📊 Google Looker Studio</strong><br><span style="font-size:10px;color:var(--dim)">lookerstudio.google.com</span></td><td>Container · BI Dashboard</td><td>Update Analytics Dashboard</td><td>Manager</td><td><span class="tag nc">No-Code</span></td><td>Free</td></tr>
+        <tr><td><strong>🏪 GaragePlug</strong><br><span style="font-size:10px;color:var(--dim)">garageplug.com</span></td><td>Container + Components</td><td>QR check-in, Job card, Parts check, Estimate, Mechanic tablet, Invoice, Notifications</td><td>All users</td><td><span class="tag nc">No-Code</span></td><td>Free / $30 mo</td></tr>
+        <tr><td><strong>📅 SimplyBook.me</strong><br><span style="font-size:10px;color:var(--dim)">simplybook.me</span></td><td>Container · Web App</td><td>Submit Booking · Receive Confirmation</td><td>Customer</td><td><span class="tag nc">No-Code</span></td><td>Free / $10 mo</td></tr>
+        <tr><td><strong>👥 HubSpot CRM</strong><br><span style="font-size:10px;color:var(--dim)">hubspot.com</span></td><td>Container · CRM</td><td>Customer master data · Vehicle history · Service records</td><td>Manager</td><td><span class="tag nc">No-Code</span></td><td>Free plan</td></tr>
+        <tr><td><strong>💬 WhatsApp Business</strong><br><span style="font-size:10px;color:var(--dim)">business.whatsapp.com</span></td><td>External System</td><td>Confirmation · Estimate approval · Pickup alert</td><td>Customer</td><td><span class="tag nc">No-Code</span></td><td>Free</td></tr>
+        <tr><td><strong>⚡ Zapier</strong><br><span style="font-size:10px;color:var(--dim)">zapier.com</span></td><td>Container · Automation</td><td>Auto-order parts · Sync to HubSpot · Export to BigQuery</td><td>System (auto)</td><td><span class="tag lc">Low-Code</span></td><td>Free / $9 mo</td></tr>
+        <tr><td><strong>💳 SumUp / PayPal</strong><br><span style="font-size:10px;color:var(--dim)">sumup.com</span></td><td>External System</td><td>Collect Car & Pay</td><td>Customer</td><td><span class="tag nc">No-Code</span></td><td>1.7–2.9% per tx</td></tr>
+        <tr><td><strong>🔌 OBD-II Scanner + Car Scanner App</strong></td><td>External · Hardware</td><td>Inspect Car (OBD-II)</td><td>Mechanic</td><td><span class="tag hw">Hardware</span></td><td>EUR 30–80 one-time</td></tr>
+        <tr><td><strong>📊 BigQuery + Looker Studio</strong><br><span style="font-size:10px;color:var(--dim)">cloud.google.com</span></td><td>Container · Analytics</td><td>Update Analytics Dashboard</td><td>Manager</td><td><span class="tag nc">No-Code</span></td><td>Free (10 GB/mo)</td></tr>
       </tbody>
     </table>
 
-    <div style="margin-bottom:16px;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#a5b4fc">Databases</div>
-    <table class="rel-table">
-      <thead>
-        <tr><th>Database</th><th>C4 Level</th><th>Tables / Contents</th><th>Who Manages It</th><th>Type</th></tr>
-      </thead>
+    <div style="margin-bottom:14px;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);font-weight:600">3-Layer Database Architecture</div>
+    <table class="tbl">
+      <thead><tr><th>Layer</th><th>Database</th><th>Tables / Contents</th><th>Who Manages</th><th>Type</th></tr></thead>
       <tbody>
-        <tr>
-          <td><strong style="color:var(--text)">🗄️ GaragePlug Cloud DB</strong><br><span style="font-size:10px;color:var(--dim)">Hosted by GaragePlug (cloud)</span></td>
-          <td>Container · Database (C2)<br>+ Component tables (C3)</td>
-          <td>jobs · customers · vehicles · inventory · estimates · approvals · invoices · work_logs · notifications · integration_logs · analytics_view</td>
-          <td>GaragePlug (vendor) — garage never touches it directly</td>
+        <tr style="background:#eff6ff">
+          <td><span class="tag db">① Operational</span></td>
+          <td><strong>🗄️ GaragePlug Cloud DB</strong><br><span style="font-size:10px;color:var(--dim)">Hosted by GaragePlug</span></td>
+          <td>jobs · checkins · inventory · estimates · approvals · invoices · work_logs · notifications · integration_logs</td>
+          <td>GaragePlug vendor — garage never touches it directly</td>
           <td><span class="tag db">Cloud DB</span></td>
         </tr>
-        <tr>
-          <td><strong style="color:var(--text)">🗄️ SimplyBook.me DB</strong><br><span style="font-size:10px;color:var(--dim)">Hosted by SimplyBook.me (cloud)</span></td>
-          <td>Container · Database (C2)</td>
-          <td>bookings · time_slots · customers · confirmation_logs</td>
-          <td>SimplyBook.me (vendor) — garage never touches it</td>
-          <td><span class="tag db">Cloud DB</span></td>
+        <tr style="background:#fdf4ff">
+          <td><span class="tag dbcrm">② Customer</span></td>
+          <td><strong>🗄️ HubSpot CRM Database</strong><br><span style="font-size:10px;color:var(--dim)">Hosted by HubSpot</span></td>
+          <td>contacts (customers) · vehicles · service_history · deals · communications · lifecycle_stage</td>
+          <td>HubSpot vendor — manager configures via HubSpot dashboard. Synced from GaragePlug via Zapier</td>
+          <td><span class="tag dbcrm">CRM DB</span></td>
+        </tr>
+        <tr style="background:#fff7ed">
+          <td><span class="tag dban">③ Analytics</span></td>
+          <td><strong>🗄️ Google BigQuery</strong><br><span style="font-size:10px;color:var(--dim)">Google Cloud</span></td>
+          <td>revenue_facts · parts_trends · customer_kpis · mechanic_performance · job_history · forecast_data</td>
+          <td>Manager sets up BigQuery dataset once. Zapier auto-loads exports. Looker Studio connects as read-only</td>
+          <td><span class="tag dban">Data Warehouse</span></td>
         </tr>
         <tr>
-          <td><strong style="color:var(--text)">🗄️ Zapier Workflow DB</strong><br><span style="font-size:10px;color:var(--dim)">Hosted by Zapier (cloud)</span></td>
-          <td>Container · Database (C2)</td>
-          <td>zap_rules · trigger_history · execution_logs · error_logs</td>
-          <td>Zapier (vendor) — garage sets up rules, Zapier stores them</td>
+          <td><span class="tag db">① Booking</span></td>
+          <td><strong>🗄️ SimplyBook.me DB</strong><br><span style="font-size:10px;color:var(--dim)">Hosted by SimplyBook.me</span></td>
+          <td>bookings · time_slots · customer_contacts · confirmation_logs</td>
+          <td>SimplyBook.me vendor — managed automatically</td>
           <td><span class="tag db">Cloud DB</span></td>
-        </tr>
-        <tr>
-          <td><strong style="color:var(--text)">📋 Google Sheets</strong><br><span style="font-size:10px;color:var(--dim)">Google Drive (manager's account)</span></td>
-          <td>Container · Database (C2)</td>
-          <td>GaragePlug CSV exports — used as data source for Looker Studio dashboards</td>
-          <td>Garage manager — manually imports CSV export from GaragePlug</td>
-          <td><span class="tag nc">No-Code · Free</span></td>
         </tr>
       </tbody>
     </table>
-
   </div>
 </div>
 
