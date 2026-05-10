@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Car Garage — How Our Digital System Works</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;0,700;1,300;1,600&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream:   #faf8f4;
+    --paper:   #ffffff;
+    --ink:     #1c1a17;
+    --dim:     #7a7268;
+    --rule:    #e8e2d8;
+    --green:   #1a6b3c;
+    --green-l: #edf7f1;
+    --blue:    #1d4ed8;
+    --blue-l:  #eff6ff;
+    --purple:  #7e22ce;
+    --purple-l:#fdf4ff;
+    --orange:  #c2410c;
+    --orange-l:#fff7ed;
+    --gold:    #92400e;
+    --gold-l:  #fffbeb;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--ink);
+    color: #fff;
+    padding: 60px 48px 52px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--green), var(--blue), var(--purple), var(--orange));
+  }
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #aaa;
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .hero h1 em { font-style: italic; color: #8dbf9a; }
+  .hero p {
+    color: #bbb;
+    font-size: 15px;
+    max-width: 560px;
+    font-weight: 300;
+  }
+  .hero-sub {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 24px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: #ccc;
+    text-transform: uppercase;
+  }
+  .hero-sub .dot { width: 6px; height: 6px; border-radius: 50%; background: #6dbf8f; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+  /* ── MAIN ── */
+  .main { max-width: 900px; margin: 0 auto; padding: 52px 32px 64px; }
+
+  /* ── INTRO ── */
+  .intro {
+    border-left: 3px solid var(--green);
+    padding-left: 20px;
+    margin-bottom: 52px;
+  }
+  .intro p {
+    font-size: 16px;
+    color: var(--dim);
+    line-height: 1.75;
+    font-weight: 300;
+  }
+  .intro p strong { color: var(--ink); font-weight: 500; }
+
+  /* ── SECTION ── */
+  .section { margin-bottom: 52px; }
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .section h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    color: var(--ink);
+  }
+  .section > p {
+    color: var(--dim);
+    font-size: 14.5px;
+    max-width: 620px;
+    margin-bottom: 24px;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  /* ── CARDS ── */
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; }
+
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 20px;
+    border-top: 3px solid;
+    transition: box-shadow .15s, transform .15s;
+  }
+  .card:hover { box-shadow: 0 6px 24px rgba(0,0,0,.08); transform: translateY(-2px); }
+  .card.green  { border-top-color: var(--green); }
+  .card.blue   { border-top-color: var(--blue); }
+  .card.purple { border-top-color: var(--purple); }
+  .card.orange { border-top-color: var(--orange); }
+  .card.gold   { border-top-color: var(--gold); }
+  .card.grey   { border-top-color: #94a3b8; }
+
+  .card-icon { font-size: 26px; margin-bottom: 10px; display: block; line-height: 1; }
+  .card-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 8.5px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .card.green  .card-label { color: var(--green); }
+  .card.blue   .card-label { color: var(--blue); }
+  .card.purple .card-label { color: var(--purple); }
+  .card.orange .card-label { color: var(--orange); }
+  .card.gold   .card-label { color: var(--gold); }
+  .card.grey   .card-label { color: #64748b; }
+
+  .card h3 { font-size: 14px; font-weight: 600; margin-bottom: 6px; color: var(--ink); }
+  .card p  { font-size: 13px; color: var(--dim); line-height: 1.6; font-weight: 300; }
+  .card-tag {
+    display: inline-block;
+    margin-top: 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    padding: 2px 8px;
+    border-radius: 100px;
+    font-weight: 500;
+    border: 1px solid;
+  }
+  .card.green  .card-tag { background: var(--green-l);  color: var(--green);  border-color: #a7d9bb; }
+  .card.blue   .card-tag { background: var(--blue-l);   color: var(--blue);   border-color: #bfdbfe; }
+  .card.purple .card-tag { background: var(--purple-l); color: var(--purple); border-color: #e9d5ff; }
+  .card.orange .card-tag { background: var(--orange-l); color: var(--orange); border-color: #fed7aa; }
+  .card.gold   .card-tag { background: var(--gold-l);   color: var(--gold);   border-color: #fde68a; }
+  .card.grey   .card-tag { background: #f1f5f9;         color: #475569;       border-color: #cbd5e1; }
+
+  /* ── FLOW STEPS ── */
+  .flow { display: flex; flex-direction: column; gap: 0; }
+  .flow-step {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 16px;
+    position: relative;
+  }
+  .flow-step::before {
+    content: '';
+    position: absolute;
+    left: 23px; top: 48px;
+    width: 2px; height: calc(100% - 24px);
+    background: var(--rule);
+  }
+  .flow-step:last-child::before { display: none; }
+
+  .flow-num {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 700;
+    flex-shrink: 0;
+    border: 2px solid;
+    background: var(--paper);
+    position: relative;
+    z-index: 1;
+  }
+  .flow-body { padding: 10px 0 28px; }
+  .flow-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 8.5px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+    font-weight: 500;
+  }
+  .flow-body h3 { font-size: 15px; font-weight: 600; margin-bottom: 5px; }
+  .flow-body p  { font-size: 13.5px; color: var(--dim); line-height: 1.65; font-weight: 300; }
+
+  /* flow colours */
+  .flow-step.s1 .flow-num { border-color: var(--blue);   color: var(--blue); }
+  .flow-step.s1 .flow-label { color: var(--blue); }
+  .flow-step.s2 .flow-num { border-color: var(--green);  color: var(--green); }
+  .flow-step.s2 .flow-label { color: var(--green); }
+  .flow-step.s3 .flow-num { border-color: var(--gold);   color: var(--gold); }
+  .flow-step.s3 .flow-label { color: var(--gold); }
+  .flow-step.s4 .flow-num { border-color: var(--green);  color: var(--green); }
+  .flow-step.s4 .flow-label { color: var(--green); }
+  .flow-step.s5 .flow-num { border-color: var(--purple); color: var(--purple); }
+  .flow-step.s5 .flow-label { color: var(--purple); }
+
+  /* ── STORAGE LAYERS ── */
+  .layers { display: flex; flex-direction: column; gap: 12px; }
+  .layer {
+    border-radius: 10px;
+    border: 1.5px solid;
+    padding: 18px 20px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 16px;
+    align-items: center;
+    background: var(--paper);
+  }
+  .layer.op     { border-color: #93c5fd; background: var(--blue-l); }
+  .layer.crm    { border-color: #d8b4fe; background: var(--purple-l); }
+  .layer.an     { border-color: #fdba74; background: var(--orange-l); }
+  .layer-badge  {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 700;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    border: 2px solid;
+  }
+  .layer.op  .layer-badge { background: #dbeafe; border-color: #93c5fd; color: var(--blue); }
+  .layer.crm .layer-badge { background: #f3e8ff; border-color: #d8b4fe; color: var(--purple); }
+  .layer.an  .layer-badge { background: #ffedd5; border-color: #fdba74; color: var(--orange); }
+  .layer-text h4 { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+  .layer.op  .layer-text h4 { color: var(--blue); }
+  .layer.crm .layer-text h4 { color: var(--purple); }
+  .layer.an  .layer-text h4 { color: var(--orange); }
+  .layer-text p { font-size: 12.5px; color: var(--dim); font-weight: 300; line-height: 1.5; }
+  .layer-tool {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .layer.op  .layer-tool { color: var(--blue); }
+  .layer.crm .layer-tool { color: var(--purple); }
+  .layer.an  .layer-tool { color: var(--orange); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: var(--rule);
+    margin: 48px 0;
+  }
+
+  /* ── BOTTOM SUMMARY ── */
+  .summary-bar {
+    background: var(--ink);
+    color: #fff;
+    border-radius: 12px;
+    padding: 28px 32px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 24px;
+  }
+  .stat-item {}
+  .stat-num {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-size: 12px;
+    color: #888;
+    font-weight: 300;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    border-top: 1px solid var(--rule);
+    padding: 20px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    background: var(--paper);
+  }
+  .footer p { font-size: 11px; color: var(--dim); font-family: 'DM Mono', monospace; }
+  .footer-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--green);
+    text-decoration: none;
+    border-bottom: 1px solid var(--green);
+    padding-bottom: 1px;
+  }
+
+  @media (max-width: 600px) {
+    .hero { padding: 40px 24px 36px; }
+    .main { padding: 36px 20px 48px; }
+    .layer { grid-template-columns: auto 1fr; }
+    .layer-tool { display: none; }
+    .summary-bar { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Car Garage · Digital Transformation · System Explanation</div>
+  <h1>How Our <em>Digital Garage</em><br>System Works</h1>
+  <p>A plain-English guide to the technology behind your car service — from the moment you book to the moment you pay.</p>
+  <div class="hero-sub">
+    <div class="dot"></div>
+    Built for customers · No technical knowledge needed
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- INTRO -->
+  <div class="intro">
+    <p>
+      Our garage has replaced all <strong>paper forms, phone calls, and manual filing</strong> with a connected digital system.
+      Every step of your car service — booking, inspection, cost approval, repair, and payment —
+      is now handled <strong>automatically through software</strong>. This page explains what that means for you
+      in simple, everyday language.
+    </p>
+  </div>
+
+  <!-- SECTION 1: WHO IS INVOLVED -->
+  <div class="section">
+    <div class="section-num">01 — The People</div>
+    <h2>Three people use this system</h2>
+    <p>The system is designed around three roles. Each person interacts with a different part of the technology.</p>
+    <div class="cards">
+      <div class="card blue">
+        <span class="card-icon">👤</span>
+        <div class="card-label">Role 1</div>
+        <h3>You — The Customer</h3>
+        <p>You book online, receive automatic updates by SMS or WhatsApp, approve any extra costs from your phone, and pay digitally when you pick up your car. You never need to call the garage or wait on hold.</p>
+        <span class="card-tag">App · WhatsApp · SMS</span>
+      </div>
+      <div class="card green">
+        <span class="card-icon">🔧</span>
+        <div class="card-label">Role 2</div>
+        <h3>The Mechanic</h3>
+        <p>Receives your job details on a tablet — no paper. Scans your car's diagnostic port to read fault codes automatically. Logs all work done digitally, takes before-and-after photos, and marks the job complete to trigger your invoice.</p>
+        <span class="card-tag">Tablet App · OBD-II Scanner</span>
+      </div>
+      <div class="card purple">
+        <span class="card-icon">👔</span>
+        <div class="card-label">Role 3</div>
+        <h3>The Garage Manager</h3>
+        <p>Monitors all jobs live on a dashboard. Sees which parts are running low, how much revenue has been made, and how each mechanic is performing — all updated in real time without any manual counting or reporting.</p>
+        <span class="card-tag">Dashboard · CRM · Analytics</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 2: JOURNEY -->
+  <div class="section">
+    <div class="section-num">02 — Your Journey</div>
+    <h2>What happens at each step of your service</h2>
+    <p>From the moment you book to the moment you drive away — here is exactly what the system does, and what you experience.</p>
+
+    <div class="flow">
+
+      <div class="flow-step s1">
+        <div class="flow-num">1</div>
+        <div class="flow-body">
+          <div class="flow-label">You book online</div>
+          <h3>Pick a date and service — any time, day or night</h3>
+          <p>Visit the booking page on your phone or computer. Choose your service type and an available slot. The system automatically sends you a confirmation by SMS or email — no phone call needed, no waiting for someone to pick up. <strong>Tool: SimplyBook.me</strong></p>
+        </div>
+      </div>
+
+      <div class="flow-step s2">
+        <div class="flow-num">2</div>
+        <div class="flow-body">
+          <div class="flow-label">You drop off your car</div>
+          <h3>Scan the QR code at the entrance — done in 10 seconds</h3>
+          <p>When you arrive, scan the QR code posted at the garage entrance with your phone camera. This logs your drop-off time automatically and creates your digital job record — no paper form to fill in. You immediately receive a link to track your car's progress live. <strong>Tool: GaragePlug</strong></p>
+        </div>
+      </div>
+
+      <div class="flow-step s3">
+        <div class="flow-num">3</div>
+        <div class="flow-body">
+          <div class="flow-label">The garage checks your car</div>
+          <h3>Your car is scanned and inspected — results logged automatically</h3>
+          <p>The mechanic plugs a small Bluetooth device into your car's diagnostic port (under the dashboard — every car has one). Within 30 seconds, all fault codes are read and stored in your digital job record. Your vehicle history from previous visits is already there too — no need to explain it again. <strong>Tool: OBD-II Scanner + GaragePlug</strong></p>
+        </div>
+      </div>
+
+      <div class="flow-step s4">
+        <div class="flow-num">4</div>
+        <div class="flow-body">
+          <div class="flow-label">You approve the cost (if needed)</div>
+          <h3>Get the estimate on your phone — approve with one tap</h3>
+          <p>If any additional work is needed beyond your original booking, the system automatically calculates the cost and sends you a detailed estimate via WhatsApp or SMS. You approve or decline with a single tap — no phone call, no back-and-forth. Your decision is recorded with a timestamp as your digital agreement. <strong>Tool: GaragePlug + WhatsApp</strong></p>
+        </div>
+      </div>
+
+      <div class="flow-step s5">
+        <div class="flow-num">5</div>
+        <div class="flow-body">
+          <div class="flow-label">You collect and pay</div>
+          <h3>Receive a push notification — pay online or tap-to-pay</h3>
+          <p>The moment the mechanic marks your job as complete, the system auto-generates your invoice and sends you a push notification: "Your car is ready." You can pay via the payment link in the message before you arrive, or tap-to-pay with your card at the counter. A digital receipt is sent automatically — no paper. <strong>Tool: GaragePlug + SumUp / PayPal</strong></p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 3: TOOLS -->
+  <div class="section">
+    <div class="section-num">03 — The Tools</div>
+    <h2>The software that makes it work</h2>
+    <p>Seven tools work together behind the scenes. You only ever interact with two or three of them — the rest run automatically in the background.</p>
+    <div class="cards">
+      <div class="card green">
+        <span class="card-icon">🏪</span>
+        <div class="card-label">Core platform</div>
+        <h3>GaragePlug</h3>
+        <p>The central brain of the system. Manages every job, every customer, every part, every invoice. Everything else connects to it.</p>
+        <span class="card-tag">You see: status page + notifications</span>
+      </div>
+      <div class="card blue">
+        <span class="card-icon">📅</span>
+        <div class="card-label">Booking</div>
+        <h3>SimplyBook.me</h3>
+        <p>The online booking page. Pick your date and service, get an instant confirmation. Available 24 hours a day, 7 days a week.</p>
+        <span class="card-tag">You see: booking page</span>
+      </div>
+      <div class="card green">
+        <span class="card-icon">💬</span>
+        <div class="card-label">Communication</div>
+        <h3>WhatsApp Business</h3>
+        <p>Sends you automated updates at every key moment — booking confirmed, car received, estimate ready, car ready for pickup.</p>
+        <span class="card-tag">You see: WhatsApp messages</span>
+      </div>
+      <div class="card orange">
+        <span class="card-icon">💳</span>
+        <div class="card-label">Payment</div>
+        <h3>SumUp / PayPal</h3>
+        <p>Pay securely online via a payment link, or tap-to-pay at the counter. Digital receipt sent automatically. No cash needed.</p>
+        <span class="card-tag">You see: payment link in SMS</span>
+      </div>
+      <div class="card grey">
+        <span class="card-icon">🔌</span>
+        <div class="card-label">Car diagnostics</div>
+        <h3>OBD-II Scanner</h3>
+        <p>A small device that plugs into your car and reads all fault codes automatically. Results go straight into your digital job record — no manual guessing.</p>
+        <span class="card-tag">You see: fault code summary in job</span>
+      </div>
+      <div class="card gold">
+        <span class="card-icon">⚡</span>
+        <div class="card-label">Automation</div>
+        <h3>Zapier (background only)</h3>
+        <p>Connects all the tools together automatically. When parts run low, Zapier sends a reorder to the supplier. When a job completes, it syncs data to the analytics system. You never see it — it just works.</p>
+        <span class="card-tag">You see: nothing (runs silently)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 4: DATA STORAGE -->
+  <div class="section">
+    <div class="section-num">04 — Your Data</div>
+    <h2>Where your information is stored — and why it is safe</h2>
+    <p>Your data is never stored in a spreadsheet or a filing cabinet. It lives in three separate, professional cloud databases — each with a specific purpose.</p>
+
+    <div class="layers">
+
+      <div class="layer op">
+        <div class="layer-badge">①</div>
+        <div class="layer-text">
+          <h4>Daily Operations Database</h4>
+          <p>Stores your current job in real time — every part used, every step completed, your invoice, your approval. Managed securely by GaragePlug in the cloud. Updated live as your car is being serviced.</p>
+        </div>
+        <div class="layer-tool">🏪 GaragePlug<br>Cloud DB</div>
+      </div>
+
+      <div class="layer crm">
+        <div class="layer-badge">②</div>
+        <div class="layer-text">
+          <h4>Customer Records Database</h4>
+          <p>Stores your long-term profile permanently — your contact details, all your vehicles (with their service history), and every visit you have made to the garage. This means next time you visit, your mechanic already knows your car. Managed securely by HubSpot CRM.</p>
+        </div>
+        <div class="layer-tool">👥 HubSpot CRM<br>Database</div>
+      </div>
+
+      <div class="layer an">
+        <div class="layer-badge">③</div>
+        <div class="layer-text">
+          <h4>Analytics Database</h4>
+          <p>Stores aggregated historical data — revenue trends, most common repairs, parts usage patterns. Used only for management reporting through Google Looker Studio dashboards. No personal customer data is used in this layer — only anonymised totals and averages.</p>
+        </div>
+        <div class="layer-tool">📊 Google BigQuery<br>+ Looker Studio</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SUMMARY BAR -->
+  <div class="summary-bar">
+    <div class="stat-item">
+      <div class="stat-num" style="color:#6dbf8f">7</div>
+      <div class="stat-label">tools working together</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num" style="color:#93c5fd">3</div>
+      <div class="stat-label">secure cloud databases</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num" style="color:#c4b5fd">0</div>
+      <div class="stat-label">paper forms or phone calls</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num" style="color:#fcd34d">24/7</div>
+      <div class="stat-label">booking availability</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num" style="color:#6dbf8f">1 tap</div>
+      <div class="stat-label">to approve any cost estimate</div>
+    </div>
+  </div>
+
+</div><!-- end main -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>Car Garage · Digital Transformation · Strategic Information Management · Heilbronn University 2026</p>
+  <a class="footer-link" href="https://sammy1412.github.io/car-garage/c4model.html" target="_blank">View full C4 technical model →</a>
+</div>
+
+</body>
+</html>
